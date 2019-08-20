@@ -155,7 +155,7 @@ export default {
     }
   },
   mounted() {
-    this.test ()
+    //this.test ()
   },
   methods: {
     tabList(index) {

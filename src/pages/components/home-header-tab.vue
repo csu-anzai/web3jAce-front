@@ -73,20 +73,40 @@ export default {
       console.log(a)
 
       // 使用 imToken 签名方法
-      var params = {
-        from: window.accounts[0],
-        to: '0xb32B93534bf338A446D619c60D0C95a176110798',
-        value: '100000',
-        orderInfo: 'signTransaction',
-      }
+      // var params = {
+      //   from: window.accounts[0],
+      //   to: '0xb32B93534bf338A446D619c60D0C95a176110798',
+      //   value: '100000',
+      //   orderInfo: 'signTransaction',
+      // }
 
-      imToken.callAPI('transaction.signTransaction', params, function (err, hash) {
+      // imToken.callAPI('transaction.signTransaction', params, function (err, hash) {
+      //   if (err) {
+      //     console.log("进入错误")
+      //     console.log(err)
+      //   } else {
+      //     console.log("签名成功")
+      //     console.log(hash)
+      //   }
+      // })
+
+      imToken.callAPI('user.getAccountList', function (err, list) {
         if (err) {
-          console.log("进入错误")
+          console.log("进入错误2")
           console.log(err)
         } else {
-          console.log("签名成功")
-          console.log(hash)
+          console.log("获取账户信息1：");
+          console.log(list)
+        }
+      })
+
+      imToken.callAPI('user.getCurrentAccount', function (err, address) {
+        if (err) {
+          console.log("进入错误3")
+          console.log(err)
+        } else {
+          console.log("获取账户信息2：");
+          console.log(address)
         }
       })
 
