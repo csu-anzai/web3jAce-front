@@ -1,0 +1,37 @@
+@font-face {  
+  font-family: 'source-Regular';
+  src: url('./source/SOURCEHANSANSCN-REGULAR.otf');
+  font-weight: normal;  
+  font-style: normal;
+}
+@font-face {  
+  font-family: 'source-Bold';
+  src: url('./source/SOURCEHANSANSCN-BOLD.otf');
+  font-weight: normal;  
+  font-style: normal;
+}
+@font-face {  
+  font-family: 'source-Medium';
+  src: url('./source/SOURCEHANSANSCN-MEDIUM.otf');
+  font-weight: normal;  
+  font-style: normal;
+}
+
+@font-face {  
+  font-family: 'lato-Medium';
+  src: url('./lato/Lato-Medium.ttf');
+  font-weight: normal;  
+  font-style: normal;
+}
+@font-face {  
+  font-family: 'lato-blod';
+  src: url('./lato/Lato-Bold.ttf');
+  font-weight: normal;  
+  font-style: normal;
+}
+@font-face {  
+  font-family: 'lato-Regular';
+  src: url('./lato/Lato-Regular.woff.ttf');
+  font-weight: normal;  
+  font-style: normal;
+}

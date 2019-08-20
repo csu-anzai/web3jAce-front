@@ -1,0 +1,16 @@
+
+input::-webkit-input-placeholder,textarea::-webkit-input-placeholder { color:#839299;font-size: .32rem;font-family: source-Regular;}
+input::-moz-placeholder,textarea::-moz-placeholder {color:#839299;font-size: .32rem;font-family: source-Regular;}
+input:-moz-placeholder,textarea:-moz-placeholder {color:#839299;font-size: .32rem;font-family: source-Regular;}
+input:-ms-input-placeholder,textarea:-ms-input-placeholder { color:#839299;font-size: .32rem;font-family: source-Regular;}
+
+canvas {
+  height: 8.68rem;
+  width: 10rem;
+  margin: 0 auto;
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 1;
+}

@@ -1,0 +1,43 @@
+$blueColor:#6D84F5;
+$grayColor1: #9598A6;
+$grayColor: #2a3259;
+
+%flexCenter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+%flexBetween {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+%flexBetween2 {
+  display: flex;
+  justify-content: space-between;
+}
+
+@mixin border($w: 1px ,$s: solid,$c: #e6e6e6,$d: top) {
+  @if $d == top {
+    border-top: $w $s $c;
+  }
+  @else if $d == right {
+    border-right: $w $s $c;
+  }
+  @else if $d == bottom {
+    border-bottom: $w $s $c;
+  }
+  @else if $d == left {
+    border-left: $w $s $c;
+  }
+  @else if $d == bor {
+    border: $w $s $c;
+  }
+}
+
+@mixin bgCover($url) {
+  background: url($url) center no-repeat;
+  background-size: cover;
+}
