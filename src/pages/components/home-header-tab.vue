@@ -71,8 +71,6 @@ export default {
       ///let ipt = this.burningIpt
       let a = !!window.imtoken
       console.log(a )
-      console.log("地址："+ window.accounts[0])
-      console.log("1")
 
       // 使用 imToken 签名方法
       var params = {

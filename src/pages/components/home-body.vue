@@ -155,14 +155,14 @@ export default {
     }
   },
   mounted() {
-    this.test ()
+    this.getInfo ()
   },
   methods: {
     tabList(index) {
       this.idx = index
     },
 
-    test () {
+    getInfo () {
       let that = this
       // 获取信息
       this.$axios.get("http://123.108.111.18/apis/aceWeb/operateBtt/getAccount?address="+ "0x09ced3ca4a35a636e5e190a1608e4b0299109e81").then(function (res) {
