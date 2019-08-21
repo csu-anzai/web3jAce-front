@@ -71,44 +71,48 @@ export default {
       ///let ipt = this.burningIpt
       let a = !!window.imtoken
       console.log(a )
+      // window.accounts[0] 当前ETH钱包地址
 
-      // 使用 imToken 签名方法
-      var params = {
-        from: window.accounts[0],
-        to: '0xb32B93534bf338A446D619c60D0C95a176110798',
-        value: '100000',
-        orderInfo: 'signTransaction',
-      }
-
-      imToken.callAPI('transaction.signTransaction', params, function (err, hash) {
+      imToken.callAPI('device.getCurrentCurrency', function(err, currency) {
         if (err) {
           console.log("进入错误")
           console.log(err)
         } else {
           console.log("签名成功")
-          console.log(hash)
+          console.log(currency)
         }
       })
 
-      imToken.callAPI('user.getAccountList', function (err, list) {
-        if (err) {
-          console.log("进入错误2")
-          console.log(err)
-        } else {
-          console.log("获取账户信息1：");
-          console.log(list)
-        }
-      })
 
-      imToken.callAPI('user.getCurrentAccount', function (err, address) {
-        if (err) {
-          console.log("进入错误3")
-          console.log(err)
-        } else {
-          console.log("获取账户信息2：");
-          console.log(address)
-        }
-      })
+      // 使用 imToken 签名方法
+      // var params = {
+      //   from: window.accounts[0],
+      //   to: '0xb32B93534bf338A446D619c60D0C95a176110798',
+      //   value: '100000',
+      //   orderInfo: 'signTransaction',
+      // }
+
+      // imToken.callAPI('transaction.signTransaction', params, function (err, hash) {
+      //   if (err) {
+      //     console.log("进入错误")
+      //     console.log(err)
+      //   } else {
+      //     console.log("签名成功")
+      //     console.log(hash)
+      //   }
+      // })
+
+
+      //获取地址
+      // imToken.callAPI('user.getCurrentAccount', function (err, address) {
+      //   if (err) {
+      //     console.log("进入错误3")
+      //     console.log(err)
+      //   } else {
+      //     console.log("获取账户信息2：");
+      //     console.log(address)
+      //   }
+      // })
 
     },
 
