@@ -90,25 +90,25 @@ export default {
       //   }
       // })
 
-      // imToken.callAPI('user.getAccountList', function (err, list) {
-      //   if (err) {
-      //     console.log("进入错误2")
-      //     console.log(err)
-      //   } else {
-      //     console.log("获取账户信息1：");
-      //     console.log(list)
-      //   }
-      // })
+      imToken.callAPI('user.getAccountList', function (err, list) {
+        if (err) {
+          console.log("进入错误2")
+          console.log(err)
+        } else {
+          console.log("获取账户信息1：");
+          console.log(list)
+        }
+      })
 
-      // imToken.callAPI('user.getCurrentAccount', function (err, address) {
-      //   if (err) {
-      //     console.log("进入错误3")
-      //     console.log(err)
-      //   } else {
-      //     console.log("获取账户信息2：");
-      //     console.log(address)
-      //   }
-      // })
+      imToken.callAPI('user.getCurrentAccount', function (err, address) {
+        if (err) {
+          console.log("进入错误3")
+          console.log(err)
+        } else {
+          console.log("获取账户信息2：");
+          console.log(address)
+        }
+      })
 
     },
 
