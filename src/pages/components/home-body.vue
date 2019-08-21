@@ -169,7 +169,7 @@ export default {
         let data = res.data.data
         let code = data.statusCode
 
-        //console.log(data);
+        console.log(data);
       
         
         that.totalCount = data.v1Count + data.v2Count + data.v3Count
