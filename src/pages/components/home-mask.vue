@@ -62,14 +62,9 @@ export default {
 <style scoped lang="scss">
 @import "../../assets/styless/public";
 .mask {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
   background: rgba(0, 0, 0, 0.2);
-  z-index: 9999;
   @extend %flexCenter;
+  @extend %fixed;
   .mask-content {
     width: 8.27rem;
     background:#fff;

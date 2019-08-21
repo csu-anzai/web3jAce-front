@@ -70,11 +70,10 @@ export default {
     sendFrom() {
       ///let ipt = this.burningIpt
 
-      //复制
-      imToken.callAPI('native.setClipboard', '复制?')
-
+      //复制到粘贴
+      //imToken.callAPI('native.setClipboard', '复制?')
       // toast 提示
-      imToken.callAPI('native.toastInfo', 'toast 提示')
+      //imToken.callAPI('native.toastInfo', 'toast 提示')
 
       let a = !!window.imtoken
       console.log(a )

@@ -1,30 +1,33 @@
 <template>
   <main class="home">
-
     <header class="home-header">
       <home-nav />
-      <home-header  />
+      <home-header />
     </header>
-    
-    
+
     <section class="home-container">
-      <home-tab @click = 'openMak' @exchange='maskShow=true'/>
+      <home-tab @click="openMak" @exchange="maskShow = true" />
 
       <home-body />
 
       <section class="btn-list">
         <public-btn :txt="settleBtn" @click.native="settle" />
 
-        <public-btn :txt="withdrawBtn" @click.native="withdrawal"/>
+        <public-btn :txt="withdrawBtn" @click.native="withdrawal" />
 
-        <input type="text" placeholder="请输入被邀请人钱包地址" v-model="invitationIpt" maxlength="42"/>
-        <public-btn :txt="invitationBtn" @click.native="copyLink" data-clipboard-target="#privateKeyText" class="copyButton"/>
-        <span id="privateKeyText">复制内容</span>
-        
+        <input
+          type="text"
+          placeholder="请输入被邀请人钱包地址"
+          v-model="invitationIpt"
+          maxlength="42"
+        />
+        <public-btn :txt="invitationBtn" @click.native="invitation" />
       </section>
     </section>
 
     <home-mask v-show="maskShow" @close="closeMask" />
+
+    <public-toast v-show="toastShow" :txt="toastTxt" />
   </main>
 </template>
 
@@ -35,6 +38,7 @@ import publicBtn from '../components/public-btn'
 import homeHeader from './components/home-header'
 import homeBody from './components/home-body'
 import homeMask from './components/home-mask'
+import publicToast from '../components/public-toast'
 
 import homeTab from "./components/home-header-tab";
 import Clipboard from 'clipboard'
@@ -47,7 +51,8 @@ export default {
     homeBody,
     publicBtn,
     homeMask,
-    homeTab
+    homeTab,
+    publicToast
   },
   props: {},
   data() {
@@ -57,20 +62,22 @@ export default {
       invitationBtn: 'home.invitationBtn',
       maskShow: false,
       invitationIpt: '',
+      toastShow: false,
+      toastTxt: '123'
     }
   },
   computed: {
 
   },
   created() {
-   
+
   },
   mounted() {
-    document.getElementsByTagName('canvas')[0].style.visibility="visible"
+    document.getElementsByTagName('canvas')[0].style.visibility = "visible"
   },
   destroyed() {
-    document.getElementsByTagName('canvas')[0].style.visibility="hidden"
-    
+    document.getElementsByTagName('canvas')[0].style.visibility = "hidden"
+
   },
   methods: {
     settle() {
@@ -85,56 +92,69 @@ export default {
       this.maskShow = false
     },
 
-    //复制链接
-    copyLink() {
-      var clipboard = new Clipboard('.copyButton')
-      clipboard.on('success', e => {
-        clipboard.destroy()
-        this.invitation()
-      })
-      clipboard.on('error', e => {
-        alert("复制失败")
-        clipboard.destroy()
-      })
-    },
-
     //邀请
-    invitation () {
+    invitation() {
       let parm = {
         "address": '0x09ced3ca4a35a636e5e190a1608e4b0299109e8',
         "refAddress": this.invitationIpt.replace(/\s+/g, "")
       }
       this.$axios.post("http://123.108.111.18/apis/aceWeb/operateBtt/operateAccount",
-        this.qs.stringify( parm )).then(function (res) {
-        let data = res.data
-        let code = data.statusCode
-        if (code == 200) {
-          alert("复制成功")
-        } else {
-          alert("失败原因：" + data.statusMsg)
-          this.invitationIpt = ""
-        }
-      }).catch(function (error) {
-        alert("系统错误")
-      });
+        this.qs.stringify(parm)).then(function (res) {
+          let data = res.data
+          let code = data.statusCode
+          if (code == 200) {
+            imToken.callAPI('native.setClipboard', '复制内容?')
+            //imToken.callAPI('native.toastInfo', 'toast 提示')
+            this.toastTxt = '复制成功'
+            this.toastShow = true
+            setTimeout(() => {
+              this.toastShow = false
+            }, 3000)
+          } else {
+            this.toastTxt = '复制失败' + data.statusMsg
+            this.toastShow = true
+            setTimeout(() => {
+              this.toastShow = false
+            }, 3000)
+            this.invitationIpt = ""
+          }
+        }).catch(function (error) {
+          this.toastTxt = '系统错误，请稍后重试...'
+          this.toastShow = true
+          setTimeout(() => {
+            this.toastShow = false
+          }, 3000)
+        });
     },
 
     //提现
-    withdrawal () {
+    withdrawal() {
       const parm = {
         "address": "0xcafb789d00a0e5855f9521d1e589ed437554caa1", //提现地址
         "amount": "0.001" //提现数额 字符串，单位：eth
       }
-      this.$axios.post('http://123.108.111.18/apis/aceWeb/operateBtt/withdraw', this.qs.stringify( parm )).then(res => {
+      this.$axios.post('http://123.108.111.18/apis/aceWeb/operateBtt/withdraw', this.qs.stringify(parm)).then(res => {
         let data = res.data
         let code = data.statusCode
         if (code == 200) {
-          alert("提现成功")
+          this.toastTxt = '提现成功'
+          this.toastShow = true
+          setTimeout(() => {
+            this.toastShow = false
+          }, 3000)
         } else {
-          alert("提现结果：" + data.statusMsg)
+          this.toastTxt = '提现失败' + data.statusMsg
+          this.toastShow = true
+          setTimeout(() => {
+            this.toastShow = false
+          }, 3000)
         }
       }).catch(function (error) {
-        alert("系统错误")
+        this.toastTxt = '系统错误，请稍后重试...'
+        this.toastShow = true
+        setTimeout(() => {
+          this.toastShow = false
+        }, 3000)
       });
     }
   }
@@ -161,7 +181,7 @@ export default {
     @extend %flexCenter;
     flex-direction: column;
     background: #fff;
-    padding: .29rem 0 .75rem;
+    padding: 0.29rem 0 0.75rem;
     border-radius: 0 0 0.21rem 0.21rem;
     button {
       width: 8.67rem;
@@ -170,15 +190,12 @@ export default {
         margin-top: 0;
       }
     }
-    span {
-      opacity: 0;
-    }
     input {
       width: 8.67rem;
       margin-top: 0.27rem;
       height: 1rem;
       border: 0;
-      @include border($d: bottom)
+      @include border($d: bottom);
     }
   }
 }

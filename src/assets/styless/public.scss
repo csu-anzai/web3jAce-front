@@ -19,6 +19,15 @@ $grayColor: #2a3259;
   justify-content: space-between;
 }
 
+%fixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+}
+
 @mixin border($w: 1px ,$s: solid,$c: #e6e6e6,$d: top) {
   @if $d == top {
     border-top: $w $s $c;
