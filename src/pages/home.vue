@@ -63,7 +63,7 @@ export default {
       maskShow: false,
       invitationIpt: '',
       toastShow: false,
-      toastTxt: '123'
+      toastTxt: ''
     }
   },
   computed: {
@@ -92,37 +92,38 @@ export default {
       this.maskShow = false
     },
 
-    //邀请
+    //复制
     invitation() {
       let parm = {
         "address": '0x09ced3ca4a35a636e5e190a1608e4b0299109e8',
         "refAddress": this.invitationIpt.replace(/\s+/g, "")
       }
-      this.$axios.post("http://123.108.111.18/apis/aceWeb/operateBtt/operateAccount",
+      let that = this
+      that.$axios.post("http://123.108.111.18/apis/aceWeb/operateBtt/operateAccount",
         this.qs.stringify(parm)).then(function (res) {
           let data = res.data
           let code = data.statusCode
           if (code == 200) {
             imToken.callAPI('native.setClipboard', '复制内容?')
             //imToken.callAPI('native.toastInfo', 'toast 提示')
-            this.toastTxt = '复制成功'
-            this.toastShow = true
+            that.toastTxt = '复制成功'
+            that.toastShow = true
             setTimeout(() => {
-              this.toastShow = false
+              that.toastShow = false
             }, 3000)
           } else {
-            this.toastTxt = '复制失败' + data.statusMsg
-            this.toastShow = true
+            that.toastTxt = '复制失败' + data.statusMsg
+            that.toastShow = true
             setTimeout(() => {
-              this.toastShow = false
+              that.toastShow = false
             }, 3000)
-            this.invitationIpt = ""
+            that.invitationIpt = ""
           }
         }).catch(function (error) {
-          this.toastTxt = '系统错误，请稍后重试...'
-          this.toastShow = true
+          that.toastTxt = '系统错误，请稍后重试...'
+          that.toastShow = true
           setTimeout(() => {
-            this.toastShow = false
+            that.toastShow = false
           }, 3000)
         });
     },
