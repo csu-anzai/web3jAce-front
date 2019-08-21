@@ -76,8 +76,6 @@ export default {
       // toast 提示
       imToken.callAPI('native.toastInfo', 'toast 提示')
 
-
-
       let a = !!window.imtoken
       console.log(a )
       // window.accounts[0] 当前ETH钱包地址
