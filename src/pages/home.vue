@@ -99,18 +99,16 @@ export default {
         "refAddress": this.invitationIpt.replace(/\s+/g, "")
       }
       let that = this
-      that.$axios.post("http://123.108.111.18/apis/aceWeb/operateBtt/operateAccount",
-        this.qs.stringify(parm)).then(function (res) {
+      that.$axios.post("http://123.108.111.18/apis/aceWeb/operateBtt/operateAccount",this.qs.stringify(parm)).then(function (res) {
           let data = res.data
           let code = data.statusCode
           if (code == 200) {
-            imToken.callAPI('native.setClipboard', '复制内容?')
-            //imToken.callAPI('native.toastInfo', 'toast 提示')
             that.toastTxt = '复制成功'
             that.toastShow = true
             setTimeout(() => {
               that.toastShow = false
             }, 3000)
+            imToken.callAPI('native.setClipboard', '复制内容?')
           } else {
             that.toastTxt = '复制失败' + data.statusMsg
             that.toastShow = true
@@ -134,27 +132,28 @@ export default {
         "address": "0xcafb789d00a0e5855f9521d1e589ed437554caa1", //提现地址
         "amount": "0.001" //提现数额 字符串，单位：eth
       }
+      let that = this
       this.$axios.post('http://123.108.111.18/apis/aceWeb/operateBtt/withdraw', this.qs.stringify(parm)).then(res => {
         let data = res.data
         let code = data.statusCode
         if (code == 200) {
-          this.toastTxt = '提现成功'
-          this.toastShow = true
+          that.toastTxt = '提现成功'
+          that.toastShow = true
           setTimeout(() => {
-            this.toastShow = false
+            that.toastShow = false
           }, 3000)
         } else {
-          this.toastTxt = '提现失败' + data.statusMsg
-          this.toastShow = true
+          that.toastTxt = '提现失败' + data.statusMsg
+          that.toastShow = true
           setTimeout(() => {
-            this.toastShow = false
+            that.toastShow = false
           }, 3000)
         }
       }).catch(function (error) {
-        this.toastTxt = '系统错误，请稍后重试...'
-        this.toastShow = true
+        that.toastTxt = '系统错误，请稍后重试...'
+        that.toastShow = true
         setTimeout(() => {
-          this.toastShow = false
+          that.toastShow = false
         }, 3000)
       });
     }
@@ -194,7 +193,8 @@ export default {
     input {
       width: 8.67rem;
       margin-top: 0.27rem;
-      height: 1rem;
+      height: 1.25rem;
+      line-height: 1.25rem;
       border: 0;
       @include border($d: bottom);
     }

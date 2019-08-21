@@ -46,7 +46,7 @@ export default {
     },
 
     buyFrom () {
-      alert("点击了购买按钮")
+      //alert("点击了购买按钮")
       
       this.closeMask()
     }
