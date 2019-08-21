@@ -102,6 +102,7 @@ export default {
       that.$axios.post("http://123.108.111.18/apis/aceWeb/operateBtt/operateAccount",this.qs.stringify(parm)).then(function (res) {
           let data = res.data
           let code = data.statusCode
+          console.log(res)
           if (code == 200) {
             that.toastTxt = '复制成功'
             that.toastShow = true
@@ -118,6 +119,7 @@ export default {
             that.invitationIpt = ""
           }
         }).catch(function (error) {
+          console.log(error)
           that.toastTxt = '系统错误，请稍后重试...'
           that.toastShow = true
           setTimeout(() => {
