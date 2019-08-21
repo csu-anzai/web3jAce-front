@@ -119,7 +119,7 @@ export default {
       });
     },
 
-    //提现 
+    //提现
     withdrawal () {
       const parm = {
         "address": "0xcafb789d00a0e5855f9521d1e589ed437554caa1", //提现地址

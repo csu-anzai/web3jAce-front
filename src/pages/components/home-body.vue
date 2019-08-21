@@ -66,14 +66,14 @@ export default {
       //     txt: '0 ETH'
       //   }
       // ],
-      nodeLevel: '',//玩家级别
-      version: '',//VIP级别
-      todayEarning: '',//当日收益
-      shareBonus: '',//加权分红
-      accuntEarning: '',//累计收益
-      dynamicEarning: '',//动态收益
-      staticEarning: '',//静态收益
-      cashBalance: '',//可提现余额
+      nodeLevel: '--',//玩家级别
+      version: '--',//VIP级别
+      todayEarning: 0,//当日收益
+      shareBonus: 0,//加权分红
+      accuntEarning: 0,//累计收益
+      dynamicEarning: 0,//动态收益
+      staticEarning: 0,//静态收益
+      cashBalance: 0,//可提现余额
 
 
 
@@ -155,7 +155,7 @@ export default {
     }
   },
   mounted() {
-    //this.test ()
+    this.test ()
   },
   methods: {
     tabList(index) {
