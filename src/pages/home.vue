@@ -133,7 +133,7 @@ export default {
         "amount": "0.001" //提现数额 字符串，单位：eth
       }
       let that = this
-      this.$axios.post('http://123.108.111.18/apis/aceWeb/operateBtt/withdraw', this.qs.stringify(parm)).then(res => {
+      that.$axios.post('http://123.108.111.18/apis/aceWeb/operateBtt/withdraw', this.qs.stringify(parm)).then(res => {
         let data = res.data
         let code = data.statusCode
         if (code == 200) {
@@ -143,7 +143,7 @@ export default {
             that.toastShow = false
           }, 3000)
         } else {
-          that.toastTxt = '提现失败' + data.statusMsg
+          that.toastTxt = '提现失败：' + data.statusMsg
           that.toastShow = true
           setTimeout(() => {
             that.toastShow = false
