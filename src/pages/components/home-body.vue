@@ -164,7 +164,6 @@ export default {
         this.getInfo (address)
       }
     })
-    this.getInfo ()
   },
   methods: {
     tabList(index) {

@@ -71,20 +71,13 @@ export default {
       withdrawIpt: '', //提现金额
       toastShow: false,
       toastTxt: '',
-      walletAddress: ''
     }
   },
   computed: {
 
   },
   created() {
-    imToken.callAPI('user.getCurrentAccount', function (err, address) {
-      if (err) {
-        imToken.callAPI('native.toastInfo', '获取钱包信息失败，请稍后重试')
-      } else {
-        this.walletAddress = address
-      }
-    })
+
   },
   mounted() {
     document.getElementsByTagName('canvas')[0].style.visibility = "visible"
@@ -108,14 +101,22 @@ export default {
 
     //复制
     invitation() {
+
+      imToken.callAPI('user.getCurrentAccount', function (err, address) {
+        if (err) {
+          imToken.callAPI('native.toastInfo', '获取钱包信息失败，请稍后重试')
+        } else {
+          var address1 = address
+        }
+      })
       let that = this
-      let address1 = that.walletAddress
+      
       let address2 = that.invitationIpt.replace(/\s+/g, "")
       let parm = {
         "address": address1,
         "refAddress": address2
       }
-      
+
       that.$axios.post(_const.url + "/apis/aceWeb/operateBtt/operateAccount", this.qs.stringify(parm)).then(function (res) {
         let data = res.data
         let code = data.statusCode
@@ -140,8 +141,15 @@ export default {
         imToken.callAPI('native.toastInfo', '请输入正确的金额')
         return
       }
+      imToken.callAPI('user.getCurrentAccount', function (err, address) {
+        if (err) {
+          imToken.callAPI('native.toastInfo', '获取钱包信息失败，请稍后重试')
+        } else {
+          var address = address
+        }
+      })
       const parm = {
-        "address": this.walletAddress, //提现地址
+        "address": address, //提现地址
         "amount": ipt //提现数额 字符串，单位：eth
       }
       let that = this
@@ -193,7 +201,7 @@ export default {
     input {
       width: 8.67rem;
       margin-top: 0.27rem;
-      padding: .35rem 0;
+      padding: 0.35rem 0;
       border: 0;
       @include border($d: bottom);
       border-radius: 0;
