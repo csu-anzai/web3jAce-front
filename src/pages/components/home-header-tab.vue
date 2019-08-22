@@ -91,22 +91,43 @@ export default {
 
 
       // 使用 imToken 签名方法
+      // var params = {
+      //   from: window.accounts[0],
+      //   to: '0xFE423180804a959192F6EDa9B4C7e0d1BBd7Ac8d',
+      //   value: '0.1',
+      //   orderInfo: 'signTransaction',
+      // }
+
+      // imToken.callAPI('transaction.signTransaction', params, function (err, hash) {
+      //   if (err) {
+      //     console.log("进入错误")
+      //     console.log(err)
+      //   } else {
+      //     console.log("签名成功")
+      //     console.log(hash)
+      //   }
+      // })
+
+
+      //调用imToken的转账方法
       var params = {
-        from: window.accounts[0],
         to: '0xFE423180804a959192F6EDa9B4C7e0d1BBd7Ac8d',
+        from: window.accounts[0],
         value: '0.1',
-        orderInfo: 'signTransaction',
+        orderInfo: '测试转账',
+        feeCustomizable: true
       }
 
-      imToken.callAPI('transaction.signTransaction', params, function (err, hash) {
+      imToken.callAPI('transaction.tokenPay', params, function (err, hash) {
         if (err) {
           console.log("进入错误")
           console.log(err)
         } else {
-          console.log("签名成功")
+          console.log("转账成功")
           console.log(hash)
         }
       })
+            
 
 
       //获取地址
