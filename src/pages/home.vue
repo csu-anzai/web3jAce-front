@@ -99,7 +99,7 @@ export default {
         "refAddress": this.invitationIpt.replace(/\s+/g, "")
       }
       let that = this
-      that.$axios.post("http://123.108.111.18/apis/aceWeb/operateBtt/operateAccount",this.qs.stringify(parm)).then(function (res) {
+      that.$axios.post(_const.url+ "/apis/aceWeb/operateBtt/operateAccount",this.qs.stringify(parm)).then(function (res) {
           let data = res.data
           let code = data.statusCode
           console.log(res)
@@ -135,7 +135,7 @@ export default {
         "amount": "0.001" //提现数额 字符串，单位：eth
       }
       let that = this
-      that.$axios.post('http://123.108.111.18/apis/aceWeb/operateBtt/withdraw', this.qs.stringify(parm)).then(res => {
+      that.$axios.post(_const.url+ '/aceWeb/operateBtt/withdraw', this.qs.stringify(parm)).then(res => {
         let data = res.data
         let code = data.statusCode
         if (code == 200) {

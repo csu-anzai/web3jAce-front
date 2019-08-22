@@ -1,5 +1,5 @@
 const config = {
-  url: 'http://123.108.111.18/apis/aceWeb/operateBtt/',
+  url: 'https://dapp.bbtchain.net/apis',
 }
 
 let bindToGlobal = (obj, key) => {

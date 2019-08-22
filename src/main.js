@@ -9,7 +9,7 @@ import './assets/common/font.css'
 
 import './assets/js/flexible'
 
-import './utils/constants/network.js'
+import './utils/constants/network'
 
 import 'babel-polyfill'
 import Fastclick from 'fastclick'
