@@ -3,16 +3,15 @@
   <main>
     <header>
       <public-nav @returnPage = 'returnPage' @functionPage = 'setPage' :navRight = "false"/>
-      
-      <withdraw-header/>
+      <withdraw-header />
     </header>
 
     <footer>
       <section>
-        <span>{{ $t("withdraw.statistical") }}</span>
-        <span>US$0.40</span>
+        <span>gas</span>
+        <span>0.40</span>
       </section>
-      <public-btn :txt="balanceBtn" class="balance-btn" />
+      <!-- <public-btn :txt="balanceBtn" class="balance-btn" /> -->
     </footer>
   </main>
 </template>

@@ -1,19 +1,14 @@
 <template>
   <header>
     <h2>5825 ETH</h2>
-    <p class="header-txt">≈US$0.00</p>
     <ul>
       <li>
         <p>From</p>
-        <p>多币种钱包 1（0x5265d8cae6...d2eadae9c9b6）</p>
+        <p>{{ $t('withdraw.withdrawWallet') }} {{ walletAddress }}）</p>
       </li>
       <li>
         <p>DApps</p>
-        <p>http://miraclelab.github.io/?c...d2eadae9c9b5265d8cae6</p>
-      </li>
-      <li>
-        <p>{{ $t("withdraw.internetFee") }}</p>
-        <p>5825 ETH (USS$0.40)</p>
+        <p>{{ walletLink.replace(/(.{30}).+(.{20})/,'$1...$2') }}</p>
       </li>
     </ul>
   </header>
@@ -25,8 +20,19 @@ export default {
   props: {},
   data() {
     return {
-
+      walletAddress: '',
+      walletLink: ''
     }
+  },
+  mounted() {
+    imToken.callAPI('user.getCurrentAccount', function (err, address) {
+      if (err) {
+        imToken.callAPI('native.toastInfo', '获取钱包信息失败，请稍后重试')
+      } else {
+        this.walletAddress = address
+        this.walletLink = _const.urlLink + '/?address=' + address
+      }
+    })
   },
   methods: {
 
@@ -43,12 +49,6 @@ h2 {
       text-align: center;
       font-family: lato-blod;
     }
-    .header-txt {
-      color: $grayColor1;
-      font-size: .32rem;
-      text-align: center;
-      font-family: lato-Regular;
-    }
     ul {
       margin-top: 1.03rem;
       li {
@@ -63,12 +63,6 @@ h2 {
             color: $grayColor;
             padding-bottom: .27rem;
             font-family: lato-blod;
-          }
-        }
-        &:last-child {
-          @extend %flexBetween;
-          p {
-            padding: 0;
           }
         }
       }

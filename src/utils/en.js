@@ -28,9 +28,14 @@ export default {
     resultsTxt3: 'Main',
 
     dataTxt: 'Token Burnout rate',
+
+    addressIpt: "Please enter the invitee's wallet address",
+    amountIpt: 'Please enter the withdrawal amount',
   },
 
   withdraw: {
+    withdrawWallet: 'Multi-currency wallets',
+
     listTxt1: 'Gas price',
     listTxt2: 'Gas limite',
     listTxt3: 'Transaction data (optional)',

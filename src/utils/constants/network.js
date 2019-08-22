@@ -1,5 +1,6 @@
 const config = {
   url: 'https://dapp.bbtchain.net/apis',
+  urlLink: 'https://aceluodan.github.io/web3jAce-front/dist/index.html',
 }
 
 let bindToGlobal = (obj, key) => {

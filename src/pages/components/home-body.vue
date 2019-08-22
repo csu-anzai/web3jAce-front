@@ -81,6 +81,8 @@ export default {
       v1Count: 0,
       v2Count: 0,
       v3Count: 0,
+
+      walletAddress: '',
     }
   },
   computed: {
@@ -155,22 +157,26 @@ export default {
     }
   },
   mounted() {
-    //this.getInfo ()
+    imToken.callAPI('user.getCurrentAccount', function (err, address) {
+      if (err) {
+        imToken.callAPI('native.toastInfo', '获取钱包信息失败，请稍后重试')
+      } else {
+        this.walletAddress = address
+      }
+    })
+    this.getInfo ()
   },
   methods: {
     tabList(index) {
       this.idx = index
     },
-
     getInfo () {
       let that = this
       // 获取信息
-      this.$axios.get(_const.url+ "/aceWeb/operateBtt/getAccount?address="+ "0x09ced3ca4a35a636e5e190a1608e4b0299109e81").then(function (res) {
+      this.$axios.get(_const.url+ "/aceWeb/operateBtt/getAccount?address="+ that.walletAddress).then(function (res) {
         let data = res.data.data
         let code = data.statusCode
-
         console.log(data);
-      
         
         that.totalCount = data.v1Count + data.v2Count + data.v3Count
         that.v1Count = data.v1Count

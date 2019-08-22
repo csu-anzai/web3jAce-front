@@ -13,11 +13,17 @@
       <section class="btn-list">
         <public-btn :txt="settleBtn" @click.native="settle" />
 
+        <input
+          type="number"
+          :placeholder="$t('home.amountIpt')"
+          v-model="withdrawIpt"
+          maxlength="42"
+        />
         <public-btn :txt="withdrawBtn" @click.native="withdrawal" />
 
         <input
           type="text"
-          placeholder="请输入被邀请人钱包地址"
+          :placeholder="$t('home.addressIpt')"
           v-model="invitationIpt"
           maxlength="42"
         />
@@ -61,16 +67,24 @@ export default {
       withdrawBtn: 'home.withdrawBtn',
       invitationBtn: 'home.invitationBtn',
       maskShow: false,
-      invitationIpt: '',
+      invitationIpt: '', //被邀请人地址
+      withdrawIpt: '', //提现金额
       toastShow: false,
-      toastTxt: ''
+      toastTxt: '',
+      walletAddress: ''
     }
   },
   computed: {
 
   },
   created() {
-
+    imToken.callAPI('user.getCurrentAccount', function (err, address) {
+      if (err) {
+        imToken.callAPI('native.toastInfo', '获取钱包信息失败，请稍后重试')
+      } else {
+        this.walletAddress = address
+      }
+    })
   },
   mounted() {
     document.getElementsByTagName('canvas')[0].style.visibility = "visible"
@@ -94,69 +108,53 @@ export default {
 
     //复制
     invitation() {
-      let parm = {
-        "address": '0x09ced3ca4a35a636e5e190a1608e4b0299109e8',
-        "refAddress": this.invitationIpt.replace(/\s+/g, "")
-      }
       let that = this
-      that.$axios.post(_const.url+ "/apis/aceWeb/operateBtt/operateAccount",this.qs.stringify(parm)).then(function (res) {
-          let data = res.data
-          let code = data.statusCode
-          console.log(res)
-          if (code == 200) {
-            that.toastTxt = '复制成功'
-            that.toastShow = true
-            setTimeout(() => {
-              that.toastShow = false
-            }, 3000)
-            imToken.callAPI('native.setClipboard', '复制内容?')
-          } else {
-            that.toastTxt = '复制失败' + data.statusMsg
-            that.toastShow = true
-            setTimeout(() => {
-              that.toastShow = false
-            }, 3000)
-            that.invitationIpt = ""
-          }
-        }).catch(function (error) {
-          console.log(error)
-          that.toastTxt = '系统错误，请稍后重试...'
-          that.toastShow = true
-          setTimeout(() => {
-            that.toastShow = false
-          }, 3000)
-        });
+      let address1 = that.walletAddress
+      let address2 = that.invitationIpt.replace(/\s+/g, "")
+      let parm = {
+        "address": address1,
+        "refAddress": address2
+      }
+      
+      that.$axios.post(_const.url + "/apis/aceWeb/operateBtt/operateAccount", this.qs.stringify(parm)).then(function (res) {
+        let data = res.data
+        let code = data.statusCode
+        console.log(res)
+        if (code == 200) {
+          imToken.callAPI('native.setClipboard', _const.urlLink + '/?address=' + address1)
+          imToken.callAPI('native.toastInfo', '复制成功')
+        } else {
+          imToken.callAPI('native.toastInfo', '复制失败')
+          that.invitationIpt = ""
+        }
+      }).catch(function (error) {
+        imToken.callAPI('native.toastInfo', '系统错误，请稍后重试...')
+      });
     },
 
     //提现
     withdrawal() {
+      let ipt = this.withdrawIpt.replace(/\s+/g, "")
+      let amountRes = /((^[1-9]\d*)|^0)(\.\d{0,2}){0,1}$/
+      if (!amountRes.test(ipt)) {
+        imToken.callAPI('native.toastInfo', '请输入正确的金额')
+        return
+      }
       const parm = {
-        "address": "0xcafb789d00a0e5855f9521d1e589ed437554caa1", //提现地址
-        "amount": "0.001" //提现数额 字符串，单位：eth
+        "address": this.walletAddress, //提现地址
+        "amount": ipt //提现数额 字符串，单位：eth
       }
       let that = this
-      that.$axios.post(_const.url+ '/aceWeb/operateBtt/withdraw', this.qs.stringify(parm)).then(res => {
+      that.$axios.post(_const.url + '/aceWeb/operateBtt/withdraw', this.qs.stringify(parm)).then(res => {
         let data = res.data
         let code = data.statusCode
         if (code == 200) {
-          that.toastTxt = '提现成功'
-          that.toastShow = true
-          setTimeout(() => {
-            that.toastShow = false
-          }, 3000)
+          imToken.callAPI('native.toastInfo', '提现成功')
         } else {
-          that.toastTxt = '提现失败：' + data.statusMsg
-          that.toastShow = true
-          setTimeout(() => {
-            that.toastShow = false
-          }, 3000)
+          imToken.callAPI('native.toastInfo', '提现失败：' + data.statusMsg)
         }
       }).catch(function (error) {
-        that.toastTxt = '系统错误，请稍后重试...'
-        that.toastShow = true
-        setTimeout(() => {
-          that.toastShow = false
-        }, 3000)
+        imToken.callAPI('native.toastInfo', '系统错误，请稍后重试...')
       });
     }
   }

@@ -28,9 +28,14 @@ export default {
     resultsTxt3: '主干',
 
     dataTxt: '令牌销毁比例',
+
+    addressIpt: '请输入被邀请人钱包地址',
+    amountIpt: '请输入提现金额',
   },
 
   withdraw: {
+    withdrawWallet: '多币种钱包',
+
     listTxt1: 'Gas 价格',
     listTxt2: 'Gas 限制',
     listTxt3: '交易数据（可选）',

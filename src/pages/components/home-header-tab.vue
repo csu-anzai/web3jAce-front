@@ -21,7 +21,6 @@
 
     <public-btn :txt="sendBtn" @click.native="sendFrom" class="active-btn" />
 
-    <public-btn :txt="exchangeBtn" />
     <!-- <public-btn :txt="exchangeBtn" @click.native="exchangeFrom" /> -->
   </main>
 </template>
@@ -76,19 +75,7 @@ export default {
       //imToken.callAPI('native.toastInfo', 'toast 提示')
 
       let a = !!window.imtoken
-      console.log(a )
-      // window.accounts[0] 当前ETH钱包地址
-
-      // imToken.callAPI('device.getCurrentCurrency', function(err, currency) {
-      //   if (err) {
-      //     console.log("进入错误")
-      //     console.log(err)
-      //   } else {
-      //     console.log("签名成功")
-      //     console.log(currency)
-      //   }
-      // })
-
+      console.log(a)
 
       // 使用 imToken 签名方法
       // var params = {
@@ -108,22 +95,21 @@ export default {
       //   }
       // })
 
-
+      console.log(this.burningIpt*(10**18))
       //调用imToken的转账方法
       var params = {
         to: '0xFE423180804a959192F6EDa9B4C7e0d1BBd7Ac8d',
         from: window.accounts[0],
-        value: '0.1',
+        value: this.burningIpt*(10**18),
         orderInfo: '测试转账',
         feeCustomizable: true
       }
       imToken.callAPI('transaction.tokenPay', params, function (err, hash) {
         if (err) {
-          console.log("进入错误")
+          imToken.callAPI('native.toastInfo', '转账失败')
           console.log(err)
         } else {
-          console.log("转账成功")
-          console.log(hash)
+          imToken.callAPI('native.toastInfo', '转账成功')
         }
       })
             
