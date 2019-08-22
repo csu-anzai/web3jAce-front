@@ -2,7 +2,11 @@
 <template>
   <main>
     <header>
-      <public-nav @returnPage = 'returnPage' @functionPage = 'setPage' :navRight = "false"/>
+      <public-nav
+        @returnPage="returnPage"
+        @functionPage="setPage"
+        :navRight="false"
+      />
       <withdraw-header />
     </header>
 
@@ -46,29 +50,28 @@ export default {
       if (err) {
         imToken.callAPI('native.toastInfo', '获取钱包信息失败，请稍后重试')
       } else {
+        console.log(address)
         // 获取信息
-        this.$axios.get(_const.url + "/aceWeb/operateBtt/getAccount?address=" + address).then(function (res) {
+        that.$axios.get(_const.url + "/aceWeb/operateBtt/getAccount?address=" + address).then(res => {
           let data = res.data.data
           let code = data.statusCode
           console.log(data);
-
           that.walletGas = data.gas
-          
-
-        }).catch(function (error) {
+        }).catch(error => {
           console.log("获取用户信息错误")
           console.log(error);
         });
+        console.log("请求结束")
       }
     })
   },
   destroyed() { },
   methods: {
-    returnPage () {
+    returnPage() {
       this.$router.push({ path: '/' })
     },
 
-    setPage () {
+    setPage() {
       this.$router.push({ path: '/updateWithdraw' })
     }
   }
@@ -81,7 +84,7 @@ main {
   display: flex;
   flex-direction: column;
   height: 100vh;
-  background:#f5f6fa;
+  background: #f5f6fa;
   header {
     background: #fff;
   }
@@ -89,15 +92,15 @@ main {
     flex: 1;
     @extend %flexBetween;
     flex-direction: column;
-    padding: .37rem .4rem .48rem;
+    padding: 0.37rem 0.4rem 0.48rem;
     section {
       @extend %flexBetween;
       width: 100%;
-      font-size: .37rem;
-      color: #6F7280;
+      font-size: 0.37rem;
+      color: #6f7280;
       font-family: source-Regular;
       span:first-child {
-        color: #1A1D33;
+        color: #1a1d33;
         font-family: lato-blod;
       }
     }

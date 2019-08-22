@@ -119,7 +119,7 @@ export default {
       console.log(parm);
       //var address1 = "0x09ced3ca4a35a636e5e190a1608e4b0299109e8"
 
-      this.$axios.post(_const.url + "/aceWeb/operateBtt/operateAccount", this.qs.stringify(parm)).then(function (res) {
+      this.$axios.post(_const.url + "/aceWeb/operateBtt/operateAccount", this.qs.stringify(parm)).then(res => {
         let data = res.data
         let code = data.statusCode
         if (code == 200) {
@@ -131,7 +131,7 @@ export default {
           this.invitationIpt = ""
           //alert("复制失败")
         }
-      }).catch(function (error) {
+      }).catch(error => {
         console.log(error)
         imToken.callAPI('native.toastInfo', '系统错误，请稍后重试...')
         //alert("系统错误，请稍后重试")
@@ -158,7 +158,7 @@ export default {
           imToken.callAPI('native.toastInfo', '提现失败：' + data.statusMsg)
           //alert("提现失败：" + data.statusMsg)
         }
-      }).catch(function (error) {
+      }).catch(error => {
         imToken.callAPI('native.toastInfo', '系统错误，请稍后重试...')
         console.log(error)
         //alert("系统错误，请稍后重试")

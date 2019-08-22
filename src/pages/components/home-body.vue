@@ -164,7 +164,7 @@ export default {
         imToken.callAPI('native.toastInfo', '获取钱包信息失败，请稍后重试')
       } else {
         // 获取信息
-        this.$axios.get(_const.url + "/aceWeb/operateBtt/getAccount?address=" + address).then(function (res) {
+        that.$axios.get(_const.url + "/aceWeb/operateBtt/getAccount?address=" + address).then(res => {
           let data = res.data.data
           let code = data.statusCode
           console.log(data);
@@ -187,7 +187,7 @@ export default {
           that.dynamicEarning = data.dayReceiveAmountEth || 0 //动态收益
           that.staticEarning = data.dayRechargeReceiveAmountEth || 0//静态收益
 
-        }).catch(function (error) {
+        }).catch(error => {
           console.log("获取用户信息错误")
           console.log(error);
         });
