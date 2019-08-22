@@ -27,6 +27,7 @@
           v-model="invitationIpt"
           maxlength="42"
         />
+        <input type="text" v-model="userAddress" />
         <public-btn :txt="invitationBtn" @click.native="invitation" />
       </section>
     </section>
@@ -71,13 +72,22 @@ export default {
       withdrawIpt: '', //提现金额
       toastShow: false,
       toastTxt: '',
+
+      userAddress: ''
     }
   },
   computed: {
 
   },
   created() {
-
+    let that = this
+    imToken.callAPI('user.getCurrentAccount', function (err, address) {
+      if (err) {
+        imToken.callAPI('native.toastInfo', '获取钱包信息失败，请稍后重试')
+      } else {
+        that.userAddress = address
+      }
+    })
   },
   mounted() {
     document.getElementsByTagName('canvas')[0].style.visibility = "visible"
@@ -101,68 +111,57 @@ export default {
 
     //复制
     invitation() {
-
-      imToken.callAPI('user.getCurrentAccount', function (err, address) {
-        if (err) {
-          imToken.callAPI('native.toastInfo', '获取钱包信息失败，请稍后重试')
-        } else {
-          var address1 = address
-        }
-      })
-      let that = this
-      
-      let address2 = that.invitationIpt.replace(/\s+/g, "")
+      let address2 = this.invitationIpt.replace(/\s+/g, "")
       let parm = {
-        "address": address1,
+        "address": this.userAddress,
         "refAddress": address2
       }
-      console.log(parm)
-      that.$axios.post(_const.url + "/apis/aceWeb/operateBtt/operateAccount", this.qs.stringify(parm)).then(function (res) {
+      console.log(parm);
+      //var address1 = "0x09ced3ca4a35a636e5e190a1608e4b0299109e8"
+
+      this.$axios.post(_const.url + "/aceWeb/operateBtt/operateAccount", this.qs.stringify(parm)).then(function (res) {
         let data = res.data
         let code = data.statusCode
-        console.log(res)
         if (code == 200) {
-          imToken.callAPI('native.setClipboard', _const.urlLink + '/?address=' + address1)
+          imToken.callAPI('native.setClipboard', _const.urlLink + '/?address=' + address2)
           imToken.callAPI('native.toastInfo', '复制成功')
+          //alert("成功")
         } else {
           imToken.callAPI('native.toastInfo', '复制失败')
-          that.invitationIpt = ""
+          this.invitationIpt = ""
+          //alert("复制失败")
         }
       }).catch(function (error) {
+        console.log(error)
         imToken.callAPI('native.toastInfo', '系统错误，请稍后重试...')
+        //alert("系统错误，请稍后重试")
       });
     },
+
+
 
     //提现
     withdrawal() {
       let ipt = this.withdrawIpt.replace(/\s+/g, "")
-      let amountRes = /((^[1-9]\d*)|^0)(\.\d{0,2}){0,1}$/
-      if (!amountRes.test(ipt)) {
-        imToken.callAPI('native.toastInfo', '请输入正确的金额')
-        return
-      }
-      imToken.callAPI('user.getCurrentAccount', function (err, address) {
-        if (err) {
-          imToken.callAPI('native.toastInfo', '获取钱包信息失败，请稍后重试')
-        } else {
-          var address = address
-        }
-      })
+      var walletAddress = this.userAddress
       const parm = {
-        "address": address, //提现地址
+        "address": walletAddress, //提现地址
         "amount": ipt //提现数额 字符串，单位：eth
       }
-      let that = this
-      that.$axios.post(_const.url + '/aceWeb/operateBtt/withdraw', this.qs.stringify(parm)).then(res => {
+      this.$axios.post(_const.url + '/aceWeb/operateBtt/withdraw', this.qs.stringify(parm)).then(res => {
         let data = res.data
         let code = data.statusCode
         if (code == 200) {
           imToken.callAPI('native.toastInfo', '提现成功')
+          //alert("提现成功")
         } else {
           imToken.callAPI('native.toastInfo', '提现失败：' + data.statusMsg)
+          //alert("提现失败：" + data.statusMsg)
         }
       }).catch(function (error) {
         imToken.callAPI('native.toastInfo', '系统错误，请稍后重试...')
+        console.log(error)
+        //alert("系统错误，请稍后重试")
       });
     }
   }

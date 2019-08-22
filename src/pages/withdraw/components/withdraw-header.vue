@@ -20,31 +20,23 @@ export default {
   props: {},
   data() {
     return {
+      walletAddress: '',
+      walletLink: ''
     }
   },
   computed: {
-    walletAddress() {
-      imToken.callAPI('user.getCurrentAccount', function (err, address) {
-        if (err) {
-          imToken.callAPI('native.toastInfo', '获取钱包信息失败，请稍后重试')
-        } else {
-          return address
-        }
-      })
-    },
-
-    walletLink () {
-      imToken.callAPI('user.getCurrentAccount', function (err, address) {
-        if (err) {
-          imToken.callAPI('native.toastInfo', '获取钱包信息失败，请稍后重试')
-        } else {
-          return  _const.urlLink + '/?address=' + address
-        }
-      })
-    }
+    
   },
   mounted() {
-
+    let that = this
+    imToken.callAPI('user.getCurrentAccount', function (err, address) {
+      if (err) {
+        imToken.callAPI('native.toastInfo', '获取钱包信息失败，请稍后重试')
+      } else {
+        that.walletAddress = address
+        that.walletLink = _const.urlLink + '/?address=' + address
+      }
+    })
   },
   methods: {
 

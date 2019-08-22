@@ -9,7 +9,7 @@
     <footer>
       <section>
         <span>gas</span>
-        <span>0.40</span>
+        <span>{{ walletGas }}</span>
       </section>
       <!-- <public-btn :txt="balanceBtn" class="balance-btn" /> -->
     </footer>
@@ -30,7 +30,8 @@ export default {
   props: {},
   data() {
     return {
-      balanceBtn: 'withdraw.balanceBtn'
+      balanceBtn: 'withdraw.balanceBtn',
+      walletGas: 0
     }
   },
   computed: {
@@ -40,7 +41,26 @@ export default {
 
   },
   mounted() {
+    let that = this
+    imToken.callAPI('user.getCurrentAccount', function (err, address) {
+      if (err) {
+        imToken.callAPI('native.toastInfo', '获取钱包信息失败，请稍后重试')
+      } else {
+        // 获取信息
+        this.$axios.get(_const.url + "/aceWeb/operateBtt/getAccount?address=" + address).then(function (res) {
+          let data = res.data.data
+          let code = data.statusCode
+          console.log(data);
 
+          that.walletGas = data.gas
+          
+
+        }).catch(function (error) {
+          console.log("获取用户信息错误")
+          console.log(error);
+        });
+      }
+    })
   },
   destroyed() { },
   methods: {
