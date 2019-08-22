@@ -29,6 +29,7 @@ export default {
       if (err) {
         imToken.callAPI('native.toastInfo', '获取钱包信息失败，请稍后重试')
       } else {
+        console.log(address)
         this.walletAddress = address
         this.walletLink = _const.urlLink + '/?address=' + address
       }

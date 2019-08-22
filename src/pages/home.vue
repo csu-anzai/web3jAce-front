@@ -82,6 +82,7 @@ export default {
       if (err) {
         imToken.callAPI('native.toastInfo', '获取钱包信息失败，请稍后重试')
       } else {
+        console.log("获取钱包信息")
         this.walletAddress = address
       }
     })
@@ -193,10 +194,10 @@ export default {
     input {
       width: 8.67rem;
       margin-top: 0.27rem;
-      height: 1.25rem;
-      line-height: 1.25rem;
+      padding: .35rem 0;
       border: 0;
       @include border($d: bottom);
+      border-radius: 0;
     }
   }
 }
