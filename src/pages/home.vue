@@ -116,7 +116,7 @@ export default {
         "address": address1,
         "refAddress": address2
       }
-
+      console.log(parm)
       that.$axios.post(_const.url + "/apis/aceWeb/operateBtt/operateAccount", this.qs.stringify(parm)).then(function (res) {
         let data = res.data
         let code = data.statusCode

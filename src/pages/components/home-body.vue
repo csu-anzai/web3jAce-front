@@ -5,13 +5,14 @@
         v-for="(item, index) in itemList"
         :key="index"
         :class="idx === index ? 'active-color' : ''"
-        @click="tabList(index)">
+        @click="tabList(index)"
+      >
         {{ $t(item.txt) }}
       </li>
     </ul>
 
     <!-- 收益 -->
-    <public-list :itemList="earningsList" v-show="idx === 0"/>
+    <public-list :itemList="earningsList" v-show="idx === 0" />
 
     <!-- 业绩 -->
     <!-- <public-list :itemList="resultsList" v-show="idx === 1" /> -->
@@ -30,7 +31,7 @@ export default {
     publicList
   },
   props: {
-    
+
   },
   data() {
     return {
@@ -86,8 +87,8 @@ export default {
     }
   },
   computed: {
-    earningsList () {
-      return  [
+    earningsList() {
+      return [
         {
           id: 1,
           tit: 'home.earningsTxt1',
@@ -131,7 +132,7 @@ export default {
       ]
     },
 
-    dataList () {
+    dataList() {
       return [
         {
           id: 1,
@@ -157,27 +158,29 @@ export default {
     }
   },
   mounted() {
-    imToken.callAPI('user.getCurrentAccount', function (err, address) {
-      if (err) {
-        imToken.callAPI('native.toastInfo', '获取钱包信息失败，请稍后重试')
-      } else {
-        this.getInfo (address)
-      }
-    })
+
   },
   methods: {
     tabList(index) {
       this.idx = index
     },
-    getInfo (address) {
+    getInfo() {
       let that = this
-      console.log("获取当前钱包地址信息：" + address)
+      
+      imToken.callAPI('user.getCurrentAccount', function (err, address) {
+        if (err) {
+          imToken.callAPI('native.toastInfo', '获取钱包信息失败，请稍后重试')
+        } else {
+          var walletAddress = address
+        }
+      })
+      console.log("获取当前钱包地址信息：" + walletAddress)
       // 获取信息
-      this.$axios.get(_const.url+ "/aceWeb/operateBtt/getAccount?address="+ address).then(function (res) {
+      this.$axios.get(_const.url + "/aceWeb/operateBtt/getAccount?address=" + walletAddress).then(function (res) {
         let data = res.data.data
         let code = data.statusCode
         console.log(data);
-        
+
         that.totalCount = data.v1Count + data.v2Count + data.v3Count
         that.v1Count = data.v1Count
         that.v2Count = data.v2Count
@@ -195,7 +198,7 @@ export default {
         that.version = data.version || '--' //VIP级别
         that.dynamicEarning = data.dayReceiveAmountEth || 0 //动态收益
         that.staticEarning = data.dayRechargeReceiveAmountEth || 0//静态收益
-  
+
       }).catch(function (error) {
         console.log("获取用户信息错误")
         console.log(error);
@@ -220,17 +223,17 @@ export default {
     box-sizing: border-box;
     padding: 0 1.07rem;
     li {
-      padding: 0 .24rem;
+      padding: 0 0.24rem;
       height: 1.28rem;
       box-sizing: border-box;
       @extend %flexCenter;
-      color: #A2A8BF;
-      font-size: .4rem;
+      color: #a2a8bf;
+      font-size: 0.4rem;
       font-family: source-Medium;
-      @include border($w: .04rem,$c: transparent,$d: bottom);
+      @include border($w: 0.04rem, $c: transparent, $d: bottom);
     }
     .active-color {
-      border-color: #6D84F5;
+      border-color: #6d84f5;
       color: $blueColor;
     }
   }
