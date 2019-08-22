@@ -82,7 +82,7 @@ export default {
       v2Count: 0,
       v3Count: 0,
 
-      walletAddress: '',
+      //walletAddress: '',
     }
   },
   computed: {
@@ -161,8 +161,7 @@ export default {
       if (err) {
         imToken.callAPI('native.toastInfo', '获取钱包信息失败，请稍后重试')
       } else {
-        
-        this.walletAddress = address
+        this.getInfo (address)
       }
     })
     this.getInfo ()
@@ -171,11 +170,11 @@ export default {
     tabList(index) {
       this.idx = index
     },
-    getInfo () {
+    getInfo (address) {
       let that = this
-      console.log("获取当前钱包地址信息：" + that.walletAddress)
+      console.log("获取当前钱包地址信息：" + address)
       // 获取信息
-      this.$axios.get(_const.url+ "/aceWeb/operateBtt/getAccount?address="+ that.walletAddress).then(function (res) {
+      this.$axios.get(_const.url+ "/aceWeb/operateBtt/getAccount?address="+ address).then(function (res) {
         let data = res.data.data
         let code = data.statusCode
         console.log(data);
@@ -199,6 +198,7 @@ export default {
         that.staticEarning = data.dayRechargeReceiveAmountEth || 0//静态收益
   
       }).catch(function (error) {
+        console.log("获取用户信息错误")
         console.log(error);
       });
     }
