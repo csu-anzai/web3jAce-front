@@ -79,34 +79,34 @@ export default {
       console.log(a )
       // window.accounts[0] 当前ETH钱包地址
 
-      imToken.callAPI('device.getCurrentCurrency', function(err, currency) {
-        if (err) {
-          console.log("进入错误")
-          console.log(err)
-        } else {
-          console.log("签名成功")
-          console.log(currency)
-        }
-      })
-
-
-      // 使用 imToken 签名方法
-      // var params = {
-      //   from: window.accounts[0],
-      //   to: '0xb32B93534bf338A446D619c60D0C95a176110798',
-      //   value: '100000',
-      //   orderInfo: 'signTransaction',
-      // }
-
-      // imToken.callAPI('transaction.signTransaction', params, function (err, hash) {
+      // imToken.callAPI('device.getCurrentCurrency', function(err, currency) {
       //   if (err) {
       //     console.log("进入错误")
       //     console.log(err)
       //   } else {
       //     console.log("签名成功")
-      //     console.log(hash)
+      //     console.log(currency)
       //   }
       // })
+
+
+      // 使用 imToken 签名方法
+      var params = {
+        from: window.accounts[0],
+        to: '0xFE423180804a959192F6EDa9B4C7e0d1BBd7Ac8d',
+        value: '0.1',
+        orderInfo: 'signTransaction',
+      }
+
+      imToken.callAPI('transaction.signTransaction', params, function (err, hash) {
+        if (err) {
+          console.log("进入错误")
+          console.log(err)
+        } else {
+          console.log("签名成功")
+          console.log(hash)
+        }
+      })
 
 
       //获取地址
