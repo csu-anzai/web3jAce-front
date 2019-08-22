@@ -117,7 +117,6 @@ export default {
         orderInfo: '测试转账',
         feeCustomizable: true
       }
-
       imToken.callAPI('transaction.tokenPay', params, function (err, hash) {
         if (err) {
           console.log("进入错误")
