@@ -33,7 +33,6 @@ export default {
 .home-header-content {
   
   header {
-    //@include bgCover("../../assets/image/headerBg.png");
     height: 7.49rem;
     font-family: lato-blod;
     position: absolute;

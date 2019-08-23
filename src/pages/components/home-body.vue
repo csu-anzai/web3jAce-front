@@ -55,14 +55,10 @@ export default {
       staticEarning: 0,//静态收益
       cashBalance: 0,//可提现余额
 
-      walletGas: 0,
-
       totalCount: 0,
       v1Count: 0,
       v2Count: 0,
       v3Count: 0,
-
-      //walletAddress: '',
     }
   },
   computed: {
@@ -149,26 +145,40 @@ export default {
         this.$axios.post(_const.url + "/aceWeb/operateBtt/operateAccount", this.qs.stringify(parm)).then(res => {
           let data = res.data.data
           let code = data.statusCode
-          console.log(data);
+          if (data === "" || data === null || code === 400) {
+            that.totalCount = 0
+            that.v1Count = 0
+            that.v2Count = 0
+            that.v3Count = 0
+            that.nodeLevel = '--' //节点级别
+            that.todayEarning = 0 //当日收益 
+            that.shareBonus = 0  //加权分红
+            that.accuntEarning = 0//累计收益
+            that.cashBalance = 0 //可提现余额
+            that.version = '--' //VIP级别
+            that.dynamicEarning = 0 //动态收益
+            that.staticEarning = 0//静态收益
+            imToken.callAPI('native.toastInfo', '用户不存在或者其他错误')
+          } else {
+            that.totalCount = Number(data.v1Count) + Number(data.v2Count) + Number(data.v3Count)
+            that.v1Count = data.v1Count
+            that.v2Count = data.v2Count
+            that.v3Count = data.v3Count
 
-          that.totalCount = data.v1Count + data.v2Count + data.v3Count
-          that.v1Count = data.v1Count
-          that.v2Count = data.v2Count
-          that.v3Count = data.v3Count
+            that.nodeLevel = data.area || '--' //节点级别
 
-          that.nodeLevel = data.area || '--' //节点级别
+            that.todayEarning = (Number(data.dayReceiveAmountEth) + Number(data.dayRechargeReceiveAmountEth) + Number(data.areaAmountEth)
+            + Number(data.superSubAmountEth) + Number(data.superAllAmountEth)) || 0 //当日收益 
+            //day_receive_amount_eth + day_recharge_receive_amount_eth + areaAmountEth + superSubAmountEth + superAllAmountEth
 
-          that.todayEarning = (data.dayReceiveAmountEth + data.dayRechargeReceiveAmountEth + data.areaAmountEth + data.superSubAmountEth + data.superAllAmountEth) || 0 //当日收益 
-          //day_receive_amount_eth + day_recharge_receive_amount_eth + areaAmountEth + superSubAmountEth + superAllAmountEth
+            that.shareBonus = (Number(data.areaAmountEth) + Number(data.superSubAmountEth) + Number(data.superAllAmountEth)) || 0  //加权分红
+            that.accuntEarning = data.receiveAmountEth || 0//累计收益
 
-          that.shareBonus = (data.areaAmountEth + data.superSubAmountEth + data.superAllAmountEth) || 0  //加权分红
-          that.accuntEarning = data.receiveAmountEth || 0//累计收益
-
-          that.cashBalance = (data.receiveAmountEth - data.withdrawAmountEth) || 0 //可提现余额
-          that.version = data.version || '--' //VIP级别
-          that.dynamicEarning = data.dayReceiveAmountEth || 0 //动态收益
-          that.staticEarning = data.dayRechargeReceiveAmountEth || 0//静态收益
-
+            that.cashBalance = (data.receiveAmountEth - data.withdrawAmountEth) || 0 //可提现余额
+            that.version = data.version || '--' //VIP级别
+            that.dynamicEarning = data.dayReceiveAmountEth || 0 //动态收益
+            that.staticEarning = data.dayRechargeReceiveAmountEth || 0//静态收益
+          }
         }).catch(error => {
           console.log("获取用户信息错误")
           console.log(error);

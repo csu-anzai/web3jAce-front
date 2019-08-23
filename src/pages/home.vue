@@ -27,7 +27,7 @@
           v-model="invitationIpt"
           maxlength="42"
         />
-        <input type="text" v-model="userAddress" />
+        <input type="text" v-model="userAddress" class="user-address-ipt" />
         <public-btn :txt="invitationBtn" @click.native="invitation" />
       </section>
     </section>
@@ -86,6 +86,19 @@ export default {
         imToken.callAPI('native.toastInfo', '获取钱包信息失败，请稍后重试')
       } else {
         that.userAddress = address
+        this.$axios.post(_const.url + "/aceWeb/operateBtt/operateAccount", this.qs.stringify({"address": address})).then(res => {
+          let data = res.data.data
+          let code = data.statusCode
+          if (data === "" || data === null || code === 400) {
+            that.withdrawIpt = 0 //可提现余额
+            imToken.callAPI('native.toastInfo', '用户不存在或者其他错误')
+          } else {
+            that.withdrawIpt = (data.receiveAmountEth - data.withdrawAmountEth) || 0 //可提现余额
+          }
+        }).catch(error => {
+          console.log("获取用户信息失败")
+          console.log(error);
+        });
       }
     })
   },
@@ -138,12 +151,14 @@ export default {
       });
     },
 
-
-
     //提现
     withdrawal() {
       let ipt = this.withdrawIpt.replace(/\s+/g, "")
       var walletAddress = this.userAddress
+      if (ipt === "" || ipt === 0 || ipt < 0) {
+        imToken.callAPI('native.toastInfo', '请输入正确的提现金额')
+        return
+      }
       const parm = {
         "address": walletAddress, //提现地址
         "amount": ipt //提现数额 字符串，单位：eth
@@ -204,6 +219,12 @@ export default {
       border: 0;
       @include border($d: bottom);
       border-radius: 0;
+    }
+    .user-address-ipt {
+      opacity: 0;
+      height: 0;
+      padding: 0;
+      margin: 0;
     }
   }
 }

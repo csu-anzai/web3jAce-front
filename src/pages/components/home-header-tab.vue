@@ -67,35 +67,6 @@ export default {
     },
 
     sendFrom() {
-      ///let ipt = this.burningIpt
-
-      //复制到粘贴
-      //imToken.callAPI('native.setClipboard', '复制?')
-      // toast 提示
-      //imToken.callAPI('native.toastInfo', 'toast 提示')
-
-      let a = !!window.imtoken
-      console.log(a)
-
-      // 使用 imToken 签名方法
-      // var params = {
-      //   from: window.accounts[0],
-      //   to: '0xFE423180804a959192F6EDa9B4C7e0d1BBd7Ac8d',
-      //   value: '0.1',
-      //   orderInfo: 'signTransaction',
-      // }
-
-      // imToken.callAPI('transaction.signTransaction', params, function (err, hash) {
-      //   if (err) {
-      //     console.log("进入错误")
-      //     console.log(err)
-      //   } else {
-      //     console.log("签名成功")
-      //     console.log(hash)
-      //   }
-      // })
-
-      console.log(this.burningIpt*(10**18))
       //调用imToken的转账方法
       var params = {
         to: '0xFE423180804a959192F6EDa9B4C7e0d1BBd7Ac8d',
@@ -112,20 +83,6 @@ export default {
           imToken.callAPI('native.toastInfo', '转账成功')
         }
       })
-            
-
-
-      //获取地址
-      // imToken.callAPI('user.getCurrentAccount', function (err, address) {
-      //   if (err) {
-      //     console.log("进入错误3")
-      //     console.log(err)
-      //   } else {
-      //     console.log("获取账户信息2：");
-      //     console.log(address)
-      //   }
-      // })
-
     },
 
     exchangeFrom() {

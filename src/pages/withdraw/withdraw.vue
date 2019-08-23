@@ -66,8 +66,14 @@ export default {
         // 获取信息
         this.$axios.post(_const.url + "/aceWeb/operateBtt/operateAccount", this.qs.stringify({ "address": address })).then(res => {
           let data = res.data.data
-          that.walletGas = data.gas ||  0.000021
-          that.cashBalance = (data.receiveAmountEth - data.withdrawAmountEth) || 0
+          let code = data.statusCode
+          if (data === "" || data === null || code === 400) {
+            that.walletGas = 0
+            that.cashBalance = 0
+          } else {
+            that.walletGas = data.gas ||  0.000021
+            that.cashBalance = (data.receiveAmountEth - data.withdrawAmountEth) || 0
+          }
         }).catch(error => {
           console.log("获取用户信息错误")
           console.log(error);
