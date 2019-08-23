@@ -86,19 +86,36 @@ export default {
         imToken.callAPI('native.toastInfo', '获取钱包信息失败，请稍后重试')
       } else {
         that.userAddress = address
-        this.$axios.post(_const.url + "/aceWeb/operateBtt/operateAccount", this.qs.stringify({"address": address})).then(res => {
+        this.$axios.post(_const.url + "/aceWeb/operateBtt/operateAccount", this.qs.stringify({ "address": '0x09ced3ca4a35a636e5e190a1608e4b0299109e8' })).then(res => {
           let data = res.data.data
-          let code = data.statusCode
+          console.log(data)
           if (data === "" || data === null || code === 400) {
             that.withdrawIpt = 0 //可提现余额
             imToken.callAPI('native.toastInfo', '用户不存在或者其他错误')
           } else {
+            console.log(data.receiveAmountEth - data.withdrawAmountEth)
             that.withdrawIpt = (data.receiveAmountEth - data.withdrawAmountEth) || 0 //可提现余额
           }
         }).catch(error => {
-          console.log("获取用户信息失败")
+          console.log("获取用户信息错误")
           console.log(error);
         });
+
+        // this.$axios.post(_const.url + "/aceWeb/operateBtt/operateAccount", this.qs.stringify({ "address": address })).then(res => {
+        //   let data = res.data.data
+        //   let code = data.statusCode
+        //   console.log(res)
+        //   if (data === "" || data === null || code === 400) {
+        //     that.withdrawIpt = 0 //可提现余额
+        //     imToken.callAPI('native.toastInfo', '用户不存在或者其他错误')
+        //   } else {
+        //     console.log(data.receiveAmountEth - data.withdrawAmountEth)
+            
+        //   }
+        // }).catch(error => {
+        //   console.log("获取用户信息失败")
+        //   console.log(error);
+        // });
       }
     })
   },
@@ -140,9 +157,9 @@ export default {
           imToken.callAPI('native.toastInfo', '复制成功')
           //alert("成功")
         } else {
-          imToken.callAPI('native.toastInfo', '复制失败')
+          imToken.callAPI('native.toastInfo', '复制失败：' + data.statusMsg)
           this.invitationIpt = ""
-          //alert("复制失败")
+          //alert('复制失败：' + data.statusMsg)
         }
       }).catch(error => {
         console.log(error)
