@@ -41,32 +41,11 @@ export default {
           id: 0,
           txt: 'home.tabTxt1'
         },
-        // {
-        //   id: 1,
-        //   txt: 'home.tabTxt2'
-        // },
         {
           id: 2,
           txt: 'home.tabTxt3'
         }
       ],
-      // resultsList: [
-      //   {
-      //     id: 1,
-      //     tit: 'home.resultsTxt1',
-      //     txt: '0'
-      //   },
-      //   {
-      //     id: 2,
-      //     tit: 'home.resultsTxt2',
-      //     txt: '0 ETH'
-      //   },
-      //   {
-      //     id: 3,
-      //     tit: 'home.resultsTxt3',
-      //     txt: '0 ETH'
-      //   }
-      // ],
       nodeLevel: '--',//玩家级别
       version: '--',//VIP级别
       todayEarning: 0,//当日收益
@@ -76,7 +55,7 @@ export default {
       staticEarning: 0,//静态收益
       cashBalance: 0,//可提现余额
 
-
+      walletGas: 0,
 
       totalCount: 0,
       v1Count: 0,
@@ -164,7 +143,10 @@ export default {
         imToken.callAPI('native.toastInfo', '获取钱包信息失败，请稍后重试')
       } else {
         // 获取信息
-        that.$axios.get(_const.url + "/aceWeb/operateBtt/getAccount?address=" + address).then(res => {
+        let parm = {
+          "address": address
+        }
+        this.$axios.post(_const.url + "/aceWeb/operateBtt/operateAccount", this.qs.stringify(parm)).then(res => {
           let data = res.data.data
           let code = data.statusCode
           console.log(data);

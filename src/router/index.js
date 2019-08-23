@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 const Home = () => import('@/pages/home')
+const ErrorPage = () => import('@/pages/404')
 const Withdraw = () => import('@/pages/withdraw/withdraw')
 const UpdateWithdraw = () => import('@/pages/update-withdraw/update-withdraw')
 
@@ -13,36 +14,21 @@ var router = new Router({
       path: '/',
       name: 'home',
       component: Home,
-      // meta: {
-      //   title: ''
-      // },
-      //redirect: 'city',
-      // children: [
-      //   {
-      //     path: '/city',
-      //     name: 'city',
-      //     component: City,
-      //     meta: {
-      //       title: '城市选择'
-      //     }
-      //   }
-      // ]
     },
     {
       path: '/withdraw',
       name: 'withdraw',
       component: Withdraw,
-      // meta: {
-      //   title: ''
-      // },
     },
     {
       path: '/updateWithdraw',
       name: 'updateWithdraw',
       component: UpdateWithdraw,
-      // meta: {
-      //   title: ''
-      // },
+    },
+    {
+      path: '/404',
+      name: '404',
+      component: ErrorPage,
     }
   ],
   scrollBehavior: function (to, from, savedPosition) {

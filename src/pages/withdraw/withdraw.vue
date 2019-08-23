@@ -7,7 +7,17 @@
         @functionPage="setPage"
         :navRight="false"
       />
-      <withdraw-header />
+      <h2>{{ cashBalance }} ETH</h2>
+      <ul>
+        <li>
+          <p>From</p>
+          <p>{{ $t("withdraw.withdrawWallet") }} {{ walletAddress }}）</p>
+        </li>
+        <li>
+          <p>DApps</p>
+          <p>{{ walletLink.replace(/(.{30}).+(.{20})/, "$1...$2") }}</p>
+        </li>
+      </ul>
     </header>
 
     <footer>
@@ -23,19 +33,20 @@
 <script>
 import publicBtn from '../../components/public-btn'
 import publicNav from '../../components/public-nav'
-import withdrawHeader from './components/withdraw-header'
 export default {
   name: 'withdraw',
   components: {
     publicBtn,
-    publicNav,
-    withdrawHeader
+    publicNav
   },
   props: {},
   data() {
     return {
       balanceBtn: 'withdraw.balanceBtn',
-      walletGas: 0
+      walletGas:  0.000021,
+      walletAddress: '',
+      walletLink: '',
+      cashBalance: 0
     }
   },
   computed: {
@@ -50,13 +61,13 @@ export default {
       if (err) {
         imToken.callAPI('native.toastInfo', '获取钱包信息失败，请稍后重试')
       } else {
-        console.log(address)
+        that.walletAddress = address
+        that.walletLink = _const.urlLink + '/?address=' + address
         // 获取信息
-        that.$axios.get(_const.url + "/aceWeb/operateBtt/getAccount?address=" + address).then(res => {
+        this.$axios.post(_const.url + "/aceWeb/operateBtt/operateAccount", this.qs.stringify({ "address": address })).then(res => {
           let data = res.data.data
-          let code = data.statusCode
-          console.log(data);
-          that.walletGas = data.gas
+          that.walletGas = data.gas ||  0.000021
+          that.cashBalance = (data.receiveAmountEth - data.withdrawAmountEth) || 0
         }).catch(error => {
           console.log("获取用户信息错误")
           console.log(error);
@@ -87,6 +98,31 @@ main {
   background: #f5f6fa;
   header {
     background: #fff;
+    h2 {
+      color: #1a1d33;
+      font-size: 0.48rem;
+      padding-top: 0.76rem;
+      text-align: center;
+      font-family: lato-blod;
+    }
+    ul {
+      margin-top: 1.03rem;
+      li {
+        padding: 0.37rem 0.4rem;
+        @include border($d: bottom);
+        p {
+          color: #6f7280;
+          font-size: 0.32rem;
+          font-family: source-Regular;
+          &:first-child {
+            font-size: 0.37rem;
+            color: $grayColor;
+            padding-bottom: 0.27rem;
+            font-family: lato-blod;
+          }
+        }
+      }
+    }
   }
   footer {
     flex: 1;
