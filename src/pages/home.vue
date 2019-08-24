@@ -11,7 +11,7 @@
       <home-body />
 
       <section class="btn-list">
-        <public-btn :txt="settleBtn" @click.native="settle" />
+        <public-btn :txt="settleBtn" @click.native="test" />
 
         <input
           type="number"
@@ -48,7 +48,6 @@ import homeMask from './components/home-mask'
 import publicToast from '../components/public-toast'
 
 import homeTab from "./components/home-header-tab";
-import Clipboard from 'clipboard'
 
 export default {
   name: 'home',
@@ -80,44 +79,29 @@ export default {
 
   },
   created() {
-    let that = this
-    imToken.callAPI('user.getCurrentAccount', function (err, address) {
-      if (err) {
-        imToken.callAPI('native.toastInfo', '获取钱包信息失败，请稍后重试')
-      } else {
-        that.userAddress = address
-        this.$axios.post(_const.url + "/aceWeb/operateBtt/operateAccount", this.qs.stringify({ "address": '0x09ced3ca4a35a636e5e190a1608e4b0299109e8' })).then(res => {
-          let data = res.data.data
-          console.log(data)
-          if (data === "" || data === null || code === 400) {
-            that.withdrawIpt = 0 //可提现余额
-            imToken.callAPI('native.toastInfo', '用户不存在或者其他错误')
-          } else {
-            console.log(data.receiveAmountEth - data.withdrawAmountEth)
-            that.withdrawIpt = (data.receiveAmountEth - data.withdrawAmountEth) || 0 //可提现余额
-          }
-        }).catch(error => {
-          console.log("获取用户信息错误")
-          console.log(error);
-        });
-
-        // this.$axios.post(_const.url + "/aceWeb/operateBtt/operateAccount", this.qs.stringify({ "address": address })).then(res => {
-        //   let data = res.data.data
-        //   let code = data.statusCode
-        //   console.log(res)
-        //   if (data === "" || data === null || code === 400) {
-        //     that.withdrawIpt = 0 //可提现余额
-        //     imToken.callAPI('native.toastInfo', '用户不存在或者其他错误')
-        //   } else {
-        //     console.log(data.receiveAmountEth - data.withdrawAmountEth)
-            
-        //   }
-        // }).catch(error => {
-        //   console.log("获取用户信息失败")
-        //   console.log(error);
-        // });
-      }
-    })
+    this.test()
+    // let that = this
+    // imToken.callAPI('user.getCurrentAccount', function (err, address) {
+    //   if (err) {
+    //     imToken.callAPI('native.toastInfo', '获取钱包信息失败，请稍后重试')
+    //   } else {
+    //     that.userAddress = address
+    //     this.$axios.post(_const.url + "/aceWeb/operateBtt/operateAccount", this.qs.stringify({ "address": '0x09ced3ca4a35a636e5e190a1608e4b0299109e8' })).then(res => {
+    //       let data = res.data.data
+    //       console.log(data)
+    //       if (data === "" || data === null || code === 400) {
+    //         that.withdrawIpt = 0 //可提现余额
+    //         imToken.callAPI('native.toastInfo', '用户不存在或者其他错误')
+    //       } else {
+    //         console.log(data.receiveAmountEth - data.withdrawAmountEth)
+    //         that.withdrawIpt = (data.receiveAmountEth - data.withdrawAmountEth) || 0 //可提现余额
+    //       }
+    //     }).catch(error => {
+    //       console.log("获取用户信息错误")
+    //       console.log(error);
+    //     });
+    //   }
+    // })
   },
   mounted() {
     document.getElementsByTagName('canvas')[0].style.visibility = "visible"
@@ -195,7 +179,102 @@ export default {
         console.log(error)
         //alert("系统错误，请稍后重试")
       });
+    },
+
+    test() {
+      var from = "0x1b1755dbc38b13261BEAd045a7b435bB23D198A3";
+      // //var web3 = require("web3"); //引入web3支持，我本地使用的是web3^0.18.4
+      //var fs = require("fs"); //文件读写
+      var Tx = require("ethereumjs-tx"); //引入以太坊js交易支持
+
+
+      if (typeof web3 !== 'undefined') {
+        console.log("进入1")
+        //web3 = new Web3(web3.currentProvider);
+        web3 = new Web3(new Web3.providers.HttpProvider("https://mainnet-eth.token.im"));
+      } else {
+        console.log("进入2")
+        web3 = new Web3(new Web3.providers.HttpProvider("https://mainnet-eth.token.im"));
+      }
+      var to = "0x4094D51860B0B6478fe635A661951F3318C6B62e";
+
+
+      // 定义合约abi
+      var contractAbi = [{ "constant": true, "inputs": [], "name": "mintingFinished", "outputs": [{ "name": "", "type": "bool" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [], "name": "transfersEnabledFlag", "outputs": [{ "name": "", "type": "bool" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [], "name": "name", "outputs": [{ "name": "", "type": "string" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [{ "name": "_spender", "type": "address" }, { "name": "_value", "type": "uint256" }], "name": "approve", "outputs": [{ "name": "", "type": "bool" }], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [], "name": "totalSupply", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [{ "name": "_from", "type": "address" }, { "name": "_to", "type": "address" }, { "name": "_value", "type": "uint256" }], "name": "transferFrom", "outputs": [{ "name": "", "type": "bool" }], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [], "name": "decimals", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [], "name": "cap", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [], "name": "disableTransfers", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [{ "name": "", "type": "address" }], "name": "lockAccounts", "outputs": [{ "name": "", "type": "bool" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [{ "name": "_to", "type": "address" }, { "name": "_amount", "type": "uint256" }], "name": "mint", "outputs": [{ "name": "", "type": "bool" }], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": false, "inputs": [{ "name": "_spender", "type": "address" }, { "name": "_subtractedValue", "type": "uint256" }], "name": "decreaseApproval", "outputs": [{ "name": "", "type": "bool" }], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [{ "name": "_owner", "type": "address" }], "name": "balanceOf", "outputs": [{ "name": "balance", "type": "uint256" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [], "name": "finishMinting", "outputs": [{ "name": "", "type": "bool" }], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [], "name": "owner", "outputs": [{ "name": "", "type": "address" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [], "name": "symbol", "outputs": [{ "name": "", "type": "string" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [{ "name": "_addr", "type": "address" }], "name": "addMinter", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": false, "inputs": [{ "name": "_to", "type": "address" }, { "name": "_value", "type": "uint256" }], "name": "transfer", "outputs": [{ "name": "", "type": "bool" }], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": false, "inputs": [], "name": "enableTransfers", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": false, "inputs": [{ "name": "target", "type": "address" }, { "name": "lock", "type": "bool" }], "name": "lockAccounts", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": false, "inputs": [{ "name": "_spender", "type": "address" }, { "name": "_addedValue", "type": "uint256" }], "name": "increaseApproval", "outputs": [{ "name": "", "type": "bool" }], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": false, "inputs": [{ "name": "_addr", "type": "address" }], "name": "deleteMinter", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [{ "name": "_owner", "type": "address" }, { "name": "_spender", "type": "address" }], "name": "allowance", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [{ "name": "newOwner", "type": "address" }], "name": "transferOwnership", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [{ "name": "", "type": "address" }], "name": "minters", "outputs": [{ "name": "", "type": "bool" }], "payable": false, "stateMutability": "view", "type": "function" }, { "inputs": [], "payable": false, "stateMutability": "nonpayable", "type": "constructor" }, { "anonymous": false, "inputs": [{ "indexed": true, "name": "to", "type": "address" }, { "indexed": false, "name": "amount", "type": "uint256" }], "name": "Mint", "type": "event" }, { "anonymous": false, "inputs": [], "name": "MintFinished", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": false, "name": "target", "type": "address" }, { "indexed": false, "name": "lock", "type": "bool" }], "name": "LockFunds", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "name": "previousOwner", "type": "address" }, { "indexed": true, "name": "newOwner", "type": "address" }], "name": "OwnershipTransferred", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "name": "owner", "type": "address" }, { "indexed": true, "name": "spender", "type": "address" }, { "indexed": false, "name": "value", "type": "uint256" }], "name": "Approval", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "name": "from", "type": "address" }, { "indexed": true, "name": "to", "type": "address" }, { "indexed": false, "name": "value", "type": "uint256" }], "name": "Transfer", "type": "event" }];
+
+      //var contractAbi = JSON.parse(fs.readFileSync('./utils/MarmotTokenAbi_web3^0.18.4.txt', 'utf-8'))
+
+      //合约地址
+      var contractAddress = "0x7c88c20587d154c631bda1315b1489b852a5d652";
+      //console.log(web3);
+      var gasPrice = web3.eth.gasPrice;
+      var gasLimit = 90000;
+      // 从Imtoken 获取 from 当前账户
+
+
+      var count = web3.eth.getTransactionCount(from);
+      var tokenValue = 1;
+      var MMTContract = web3.eth.contract(contractAbi).at(contractAddress)
+      var decimal = MMTContract.decimals();
+      var balance = MMTContract.balanceOf(from);
+
+      //var adjustedBalance = balance / Math.pow(10, decimal)
+      // var tokenName = MMTContract.name();
+      // var tokenSymbol = MMTContract.symbol();
+      // console.info("tokenSymbol: " + tokenSymbol);
+      // console.info("tokenName: " + tokenName);
+      //alert("adjustedBalance: " + adjustedBalance);
+      // console.info("decimal: " + decimal);
+
+      //实例交易
+      //var tx = new Tx(rawTransaction);
+
+      //imtoken 接口去签名 todo
+      //签名
+      var params = {
+        "from": from,
+        "nonce": web3.toHex(count),
+        "gasPrice": web3.toHex(gasPrice),
+        "gasLimit": web3.toHex(gasLimit),
+        "to": contractAddress,
+        "value": "0x0",
+        "data": MMTContract.transfer.getData(to, tokenValue * (10 ** decimal))
+      }
+      alert("开始签名")
+
+      imToken.callAPI('transaction.signTransaction', params, function (err, hashs) {
+        if (err) {
+          alert(err)
+        } else {
+          //发送交易，留下hash
+          //var serializedTx = hashs.serialize();
+          console.log(hashs);
+          // web3.eth.sendRawTransaction(hashs, function (err, hash) {
+          //   if (!err) {
+          //     alert("成功");
+          //     console.log(hash);
+          //   } else {
+          //     alert(err);
+          //     console.log(err)
+          //   }
+          // });
+
+          imToken.callAPI('transaction.sendTransaction', hashs, function (err, hash) {
+            if (!err) {
+              alert("成功");
+              console.log(hash);
+            } else {
+              alert(err);
+              console.log(err)
+            }
+        });
+
     }
+  })
+
+
+
+}
   }
 }
 </script>

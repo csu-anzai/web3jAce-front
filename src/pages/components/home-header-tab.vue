@@ -69,7 +69,7 @@ export default {
     sendFrom() {
       //调用imToken的转账方法
       var params = {
-        to: '0xFE423180804a959192F6EDa9B4C7e0d1BBd7Ac8d',
+        to: _const.contractAddress,
         from: window.accounts[0],
         value: this.burningIpt*(10**18),
         orderInfo: '测试转账',
