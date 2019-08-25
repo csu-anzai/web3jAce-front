@@ -31,6 +31,8 @@ export default {
 
     addressIpt: "Please enter the invitee's wallet address",
     amountIpt: 'Please enter the withdrawal amount',
+
+    homeTips: 'Use the imToken browser to open'
   },
 
   withdraw: {

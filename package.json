@@ -21,7 +21,8 @@
     "node-fetch": "^2.6.0",
     "phantomjs": "^2.1.7",
     "vue": "^2.5.2",
-    "vue-router": "^3.0.1"
+    "vue-router": "^3.0.1",
+    "vuex": "^3.1.1"
   },
   "devDependencies": {
     "@trustwallet/walletconnect": "^0.0.12",

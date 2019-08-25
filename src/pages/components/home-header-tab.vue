@@ -4,7 +4,12 @@
     <p>{{ burningNumber }}BBT/ETH</p>
 
     <section class="ipt-list">
-      <input type="number" placeholder="1 ETH" v-model="burningIpt" />
+      <input
+        type="number"
+        placeholder="1 ETH"
+        v-model="burningIpt"
+        maxlength="20"
+      />
       <span>ETH</span>
     </section>
 
@@ -36,7 +41,7 @@ export default {
   },
   data() {
     return {
-      burningIpt: '1',
+      burningIpt: '5',
       burningNumber: 5000, //燃烧比列
       sendBtn: 'home.sendBtn',
       exchangeBtn: 'home.exchangeBtn',
@@ -69,12 +74,13 @@ export default {
     sendFrom() {
       //调用imToken的转账方法
       var params = {
-        to: _const.contractAddress,
-        from: window.accounts[0],
+        from: sessionStorage.getItem("walletAddress"),
+        to: "0x4094D51860B0B6478fe635A661951F3318C6B62e",
         value: this.burningIpt*(10**18),
         orderInfo: '测试转账',
         feeCustomizable: true
       }
+      console.log(params)
       imToken.callAPI('transaction.tokenPay', params, function (err, hash) {
         if (err) {
           imToken.callAPI('native.toastInfo', err.message)
@@ -83,6 +89,7 @@ export default {
           imToken.callAPI('native.toastInfo', '提交转账成功')
         }
       })
+
     },
 
     exchangeFrom() {

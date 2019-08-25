@@ -43,7 +43,7 @@ export default {
   data() {
     return {
       balanceBtn: 'withdraw.balanceBtn',
-      walletGas:  0.000021,
+      walletGas: 0.000021,
       walletAddress: '',
       walletLink: '',
       cashBalance: 0
@@ -56,31 +56,7 @@ export default {
 
   },
   mounted() {
-    let that = this
-    imToken.callAPI('user.getCurrentAccount', function (err, address) {
-      if (err) {
-        imToken.callAPI('native.toastInfo', '获取钱包信息失败，请稍后重试')
-      } else {
-        that.walletAddress = address
-        that.walletLink = _const.urlLink + '/?address=' + address
-        // 获取信息
-        this.$axios.post(_const.url + "/aceWeb/operateBtt/operateAccount", this.qs.stringify({ "address": address })).then(res => {
-          let data = res.data.data
-          let code = data.statusCode
-          if (data === "" || data === null || code === 400) {
-            that.walletGas = 0
-            that.cashBalance = 0
-          } else {
-            that.walletGas = data.gas ||  0.000021
-            that.cashBalance = (data.receiveAmountEth - data.withdrawAmountEth) || 0
-          }
-        }).catch(error => {
-          console.log("获取用户信息错误")
-          console.log(error);
-        });
-        console.log("请求结束")
-      }
-    })
+    this.getGas()
   },
   destroyed() { },
   methods: {
@@ -90,6 +66,22 @@ export default {
 
     setPage() {
       this.$router.push({ path: '/updateWithdraw' })
+    },
+
+    getGas() {
+      this.walletAddress = sessionStorage.getItem("walletAddress")
+      this.walletLink = _const.urlLink + '/?address=' + this.walletAddress
+      // 获取信息
+      let data = this.getInfo(sessionStorage.getItem("walletAddress"))
+      if (data === "" || data === null) {
+        this.walletGas = 0.000021
+        this.cashBalance = 0
+        imToken.callAPI('native.toastInfo', '用户不存在或者其他错误')
+      } else {
+        this.walletGas = data.gas || 0.000021
+        this.cashBalance = this.cal.accSub((data.receiveAmountEth || 0), (data.withdrawAmountEth || 0))
+      }
+
     }
   }
 }

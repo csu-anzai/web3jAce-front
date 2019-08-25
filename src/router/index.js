@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 const Home = () => import('@/pages/home')
-const ErrorPage = () => import('@/pages/404')
 const Withdraw = () => import('@/pages/withdraw/withdraw')
 const UpdateWithdraw = () => import('@/pages/update-withdraw/update-withdraw')
 
@@ -24,11 +23,6 @@ var router = new Router({
       path: '/updateWithdraw',
       name: 'updateWithdraw',
       component: UpdateWithdraw,
-    },
-    {
-      path: '/404',
-      name: '404',
-      component: ErrorPage,
     }
   ],
   scrollBehavior: function (to, from, savedPosition) {

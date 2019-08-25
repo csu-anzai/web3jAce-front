@@ -31,6 +31,8 @@ export default {
 
     addressIpt: '请输入被邀请人钱包地址',
     amountIpt: '请输入提现金额',
+
+    homeTips: '请使用imToken浏览器打开使用'
   },
 
   withdraw: {
