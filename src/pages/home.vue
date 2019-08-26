@@ -214,15 +214,24 @@ export default {
 
       //var gasPrice = web3.eth.gasPrice;
       var gasPrice = 110000000000;
-      var gasLimit = 23000;
+      var gasLimit = 800000;
       var count = 71;
       console.log("from : "+from);
 
-      web3.eth.getTransactionCount(from,function (error, hash) {
+
+      web3.eth.getGasPrice(function (error, price){
+         
+          if (!error) {
+
+          console.log("gasprice : "+price);
+
+          gasPrice = price;
+
+        web3.eth.getTransactionCount(from,function (error, tcount) {
         if (!error) {
-          imToken.callAPI('native.toastInfo', '转账提交成功')
-          console.log("hash : "+hash);
-          count = hash;
+          //imToken.callAPI('native.toastInfo', '转账提交成功')
+          console.log("tcount : "+tcount);
+          count = tcount;
 
           var tokenValue = 99;
           var MMTContract = web3.eth.contract(contractAbi).at(contractAddress);
@@ -240,18 +249,18 @@ export default {
           //签名
           var params = {
             "from": from,
-            "nonce": web3.toHex(count),
+            "nonce": web3.toHex(tcount),
             "gasPrice": web3.toHex(gasPrice),
-            "gasLimit": web3.toHex(gasLimit),
             "to": contractAddress,
             "value": "0x0",
             "data": MMTContract.transfer.getData(to, tokenValue * (10 ** decimal))
             //"data": MMTContract.methods.transfer(to, tokenValue * (10 ** decimal)).encodeABI()
           }
+
           web3.eth.sendTransaction(params, function (error, hash) {
             if (!error) {
               imToken.callAPI('native.toastInfo', '转账提交成功')
-              //console.log(hash); // "0x7f9fade1c0d57a7af66ab4ead79fade1c0d57a7af66ab4ead7c2c2eb7b11a91385"
+              console.log(hash); // "0x7f9fade1c0d57a7af66ab4ead79fade1c0d57a7af66ab4ead7c2c2eb7b11a91385"
             } else {
               imToken.callAPI('native.toastInfo', error.message)
               console.log(error);
@@ -264,6 +273,19 @@ export default {
           console.log(error);
         }
       });
+
+
+          }else{
+
+           console.log("error : "+error);
+
+          }
+
+      });
+
+      console.log("gasPrice : "+gasPrice);
+
+
 
 
 
