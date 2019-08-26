@@ -85,7 +85,7 @@ export default {
   },
   created() {
     this.currentAddress = sessionStorage.getItem("walletAddress")
-    //this.transferBbt()  转账 BBT
+    this.transferBbt()  //转账 BBT
   },
   mounted() {
     this.getInfoAll()
@@ -214,43 +214,62 @@ export default {
 
       //var gasPrice = web3.eth.gasPrice;
       var gasPrice = 110000000000;
-      var gasLimit = 230000;
+      var gasLimit = 23000;
       var count = 71;
+      console.log("from : "+from);
 
-      //var count = web3.eth.getTransactionCount();
-      var tokenValue = 99;
-      var MMTContract = web3.eth.contract(contractAbi).at(contractAddress);
-      var decimal = 18;
-
-      //var balance = MMTContract.balanceOf(from);
-      //var adjustedBalance = balance / Math.pow(10, decimal)
-      // var tokenName = MMTContract.name();
-      // var tokenSymbol = MMTContract.symbol();
-      // console.info("tokenSymbol: " + tokenSymbol);
-      // console.info("tokenName: " + tokenName);
-      //alert("adjustedBalance: " + adjustedBalance);
-      // console.info("decimal: " + decimal);
-
-      //签名
-      var params = {
-        "from": from,
-        "nonce": web3.toHex(count),
-        "gasPrice": web3.toHex(gasPrice),
-        "gasLimit": web3.toHex(gasLimit),
-        "to": contractAddress,
-        "value": "0x0",
-        "data": MMTContract.transfer.getData(to, tokenValue * (10 ** decimal))
-        //"data": MMTContract.methods.transfer(to, tokenValue * (10 ** decimal)).encodeABI()
-      }
-      web3.eth.sendTransaction(params, function (error, hash) {
+      web3.eth.getTransactionCount(from,function (error, hash) {
         if (!error) {
           imToken.callAPI('native.toastInfo', '转账提交成功')
-          //console.log(hash); // "0x7f9fade1c0d57a7af66ab4ead79fade1c0d57a7af66ab4ead7c2c2eb7b11a91385"
+          console.log("hash : "+hash);
+          count = hash;
+
+          var tokenValue = 99;
+          var MMTContract = web3.eth.contract(contractAbi).at(contractAddress);
+          var decimal = 18;
+
+          //var balance = MMTContract.balanceOf(from);
+          //var adjustedBalance = balance / Math.pow(10, decimal)
+          // var tokenName = MMTContract.name();
+          // var tokenSymbol = MMTContract.symbol();
+          // console.info("tokenSymbol: " + tokenSymbol);
+          // console.info("tokenName: " + tokenName);
+          //alert("adjustedBalance: " + adjustedBalance);
+          // console.info("decimal: " + decimal);
+
+          //签名
+          var params = {
+            "from": from,
+            "nonce": web3.toHex(count),
+            "gasPrice": web3.toHex(gasPrice),
+            "gasLimit": web3.toHex(gasLimit),
+            "to": contractAddress,
+            "value": "0x0",
+            "data": MMTContract.transfer.getData(to, tokenValue * (10 ** decimal))
+            //"data": MMTContract.methods.transfer(to, tokenValue * (10 ** decimal)).encodeABI()
+          }
+          web3.eth.sendTransaction(params, function (error, hash) {
+            if (!error) {
+              imToken.callAPI('native.toastInfo', '转账提交成功')
+              //console.log(hash); // "0x7f9fade1c0d57a7af66ab4ead79fade1c0d57a7af66ab4ead7c2c2eb7b11a91385"
+            } else {
+              imToken.callAPI('native.toastInfo', error.message)
+              console.log(error);
+            }
+          });
+
+
+           
         } else {
-          imToken.callAPI('native.toastInfo', error.message)
           console.log(error);
         }
       });
+
+
+
+
+      console.log("count : "+count);
+      
     }
   }
 }
