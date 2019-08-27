@@ -82,14 +82,13 @@ export default {
       }
       console.log(params)
       imToken.callAPI('transaction.tokenPay', params, function (err, hash) {
-        if (err) {
+        if (err) { 
           imToken.callAPI('native.toastInfo', err.message)
           console.log(err)
         } else {
           imToken.callAPI('native.toastInfo', '提交转账成功')
         }
       })
-
     },
 
     exchangeFrom() {
