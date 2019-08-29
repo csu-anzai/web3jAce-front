@@ -1,14 +1,14 @@
 export default {
   home: {
-    bannerTit1: 'Explore Business value',
-    bannerTit2: 'Remodel digital economy',
+    bannerTit1: 'Explore Business Value',
+    bannerTit2: 'Remodel Digital Economy',
     title: 'Current burning ratio',
 
     sendBtn: 'Send ETH',
     sendBtn1: 'Send BBT',
-    exchangeBtn: 'Exchange Token',
+    exchangeBtn: 'Token Exchange',
     settleBtn: 'Settle',
-    withdrawBtn: 'Withdraw income',
+    withdrawBtn: 'withdraw',
     invitationBtn: 'My invitiation link',
 
     tabTxt1: 'Earnings',
@@ -16,36 +16,36 @@ export default {
     tabTxt3: 'Data',
 
     earningsTxt1: 'node level',
-    earningsTxt2: 'VIP',
-    earningsTxt3: 'Today earnings',
-    earningsTxt4: 'Share bonus',
+    earningsTxt2: 'VIP Level',
+    earningsTxt3: 'Daily earnings',
+    earningsTxt4: 'Weighted bonus',
     earningsTxt5: 'Accumulated earnings',
     earningsTxt6: 'Dynamic earnings',
     earningsTxt7: 'Static earnings',
-    earningsTxt8: 'Cash balance',
+    earningsTxt8: 'Balance',
 
-    resultsTxt1: 'Number of shared ids',
+    resultsTxt1: 'Shared IDs',
     resultsTxt2: 'All',
     resultsTxt3: 'Main',
 
-    dataTxt: 'Token Burnout rate',
+    dataTxt: 'Token burning rate',
 
     addressIpt: "Please enter the invitee's wallet address",
     amountIpt: 'Please enter the withdrawal amount',
 
-    homeTips: 'Use the imToken browser to open'
+    homeTips: 'Please use imToken browser to open it.'
   },
 
   withdraw: {
-    withdrawWallet: 'Multi-currency wallets',
+    withdrawWallet: 'Multi-coin wallets',
 
     listTxt1: 'Gas price',
     listTxt2: 'Gas limite',
     listTxt3: 'Transaction data (optional)',
 
     internetFee: 'Internet fee',
-    statistical: 'The largest total',
-    balanceBtn: 'ETH lack of balance',
+    statistical: 'Maximum',
+    balanceBtn: 'Insufficient ETH amount',
 
     saveBtn: 'Save',
     settingBtn: 'Setting'   
@@ -55,6 +55,6 @@ export default {
   },
   mask: {
     title: 'Token',
-    maskBtn: 'BUY',
+    maskBtn: 'Trading',
   }
 }

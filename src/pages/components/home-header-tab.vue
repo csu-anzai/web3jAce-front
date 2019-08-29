@@ -189,9 +189,8 @@ export default {
             value: ethAmount,
             gasLimit: gasLimitTemp,
             gasPrice: gasPriceTemp,
-            orderInfo: '测试转账',
+            orderInfo: 'BBT应用转账ETH',
             feeCustomizable: false,
-
           }
           imToken.callAPI('transaction.tokenPay', params, function (err, hash) {
             if (err) {
