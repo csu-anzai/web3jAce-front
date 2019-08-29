@@ -5,6 +5,7 @@ export default {
     title: '当前燃烧比例',
 
     sendBtn: '发送 ETH',
+    sendBtn1: '发送 BBT',
     exchangeBtn: '兑换令牌',
     settleBtn: '结算静态收益',
     withdrawBtn: '提币',

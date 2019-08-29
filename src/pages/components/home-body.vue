@@ -140,47 +140,54 @@ export default {
       this.idx = index
     },
     getInfoAll() {
-      let data = this.getInfo(sessionStorage.getItem("walletAddress"))
-      if (data === "" || data === null) {
-        this.totalCount = 0
-        this.v1Count = 0
-        this.v2Count = 0
-        this.v3Count = 0
-        this.nodeLevel = '--' //节点级别
-        this.todayEarning = 0 //当日收益 
-        this.shareBonus = 0  //加权分红
-        this.accuntEarning = 0//累计收益
-        this.cashBalance = 0 //可提现余额
-        this.version = '--' //VIP级别
-        this.dynamicEarning = 0 //动态收益
-        this.staticEarning = 0//静态收益
-        imToken.callAPI('native.toastInfo', '用户不存在或者其他错误')
-      } else {
-        let count = this.cal.accAdd(data.v1Count, data.v2Count)
-        this.totalCount = this.cal.accAdd(count, data.v3Count) || 0
-        this.v1Count = data.v1Count || 0
-        this.v2Count = data.v2Count || 0
-        this.v3Count = data.v3Count || 0
+      this.$axios.post(_const.url + "/aceWeb/operateBtt/operateAccount", this.qs.stringify({ "address": sessionStorage.getItem("walletAddress") })).then(res => {
+        let data = res.data.data
+        console.log(data)
+        console.log("body结束")
+        if (data === "" || data === null) {
+          this.totalCount = 0
+          this.v1Count = 0
+          this.v2Count = 0
+          this.v3Count = 0
+          this.nodeLevel = '--' //节点级别
+          this.todayEarning = 0 //当日收益 
+          this.shareBonus = 0  //加权分红
+          this.accuntEarning = 0//累计收益
+          this.cashBalance = 0 //可提现余额
+          this.version = '--' //VIP级别
+          this.dynamicEarning = 0 //动态收益
+          this.staticEarning = 0//静态收益
+          imToken.callAPI('native.toastInfo', '用户不存在或者其他错误')
+        } else {
+          let count = this.cal.accAdd(data.v1Count, data.v2Count)
+          this.totalCount = this.cal.accAdd(count, data.v3Count) || 0
+          this.v1Count = data.v1Count || 0
+          this.v2Count = data.v2Count || 0
+          this.v3Count = data.v3Count || 0
 
-        this.nodeLevel = data.area || '--' //节点级别
+          this.nodeLevel = data.area || '--' //节点级别
 
-        let dayReceive = this.cal.accAdd((data.dayReceiveAmountEth || 0), (data.dayRechargeReceiveAmountEth || 0))
-        let superAll = this.cal.accAdd((data.superSubAmountEth || 0), (data.superAllAmountEth || 0))
-        let total = this.cal.accAdd(dayReceive, superAll)
+          let dayReceive = this.cal.accAdd((data.dayReceiveAmountEth || 0), (data.dayRechargeReceiveAmountEth || 0))
+          let superAll = this.cal.accAdd((data.superSubAmountEth || 0), (data.superAllAmountEth || 0))
+          let total = this.cal.accAdd(dayReceive, superAll)
 
-        this.todayEarning = this.cal.accAdd(total, Number(data.areaAmountEth || 0 ))//当日收益 
-        //day_receive_amount_eth + day_recharge_receive_amount_eth + areaAmountEth + superSubAmountEth + superAllAmountEth
+          this.todayEarning = this.cal.accAdd(total, Number(data.areaAmountEth || 0))//当日收益 
+          //day_receive_amount_eth + day_recharge_receive_amount_eth + areaAmountEth + superSubAmountEth + superAllAmountEth
 
-        let amount = this.cal.accAdd((data.areaAmountEth || 0), (data.superSubAmountEth || 0))
-        this.shareBonus = this.cal.accAdd(amount, (data.superAllAmountEth || 0))  //加权分红
+          let amount = this.cal.accAdd((data.areaAmountEth || 0), (data.superSubAmountEth || 0))
+          this.shareBonus = this.cal.accAdd(amount, (data.superAllAmountEth || 0))  //加权分红
 
-        this.cashBalance = this.cal.accSub((data.receiveAmountEth || 0), (data.withdrawAmountEth || 0)) //可提现余额
+          this.cashBalance = this.cal.accSub((data.receiveAmountEth || 0), (data.withdrawAmountEth || 0)) //可提现余额
 
-        this.accuntEarning = data.receiveAmountEth || 0//累计收益
-        this.version = data.version || '--' //VIP级别
-        this.dynamicEarning = data.dayReceiveAmountEth || 0 //动态收益
-        this.staticEarning = data.dayRechargeReceiveAmountEth || 0//静态收益
-      }
+          this.accuntEarning = data.receiveAmountEth || 0//累计收益
+          this.version = data.version || '--' //VIP级别
+          this.dynamicEarning = data.dayReceiveAmountEth || 0 //动态收益
+          this.staticEarning = data.dayRechargeReceiveAmountEth || 0//静态收益
+        }
+      }).catch(error => {
+        imToken.callAPI('native.toastInfo', '系统错误，请稍后重试...')
+        console.log(error);
+      });
     }
   },
 }

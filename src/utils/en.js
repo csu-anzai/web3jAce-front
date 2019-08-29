@@ -5,6 +5,7 @@ export default {
     title: 'Current burning ratio',
 
     sendBtn: 'Send ETH',
+    sendBtn1: 'Send BBT',
     exchangeBtn: 'Exchange Token',
     settleBtn: 'Settle',
     withdrawBtn: 'Withdraw income',
@@ -49,7 +50,9 @@ export default {
     saveBtn: 'Save',
     settingBtn: 'Setting'   
   },
-
+  tips: {
+    
+  },
   mask: {
     title: 'Token',
     maskBtn: 'BUY',

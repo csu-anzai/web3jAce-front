@@ -72,16 +72,22 @@ export default {
       this.walletAddress = sessionStorage.getItem("walletAddress")
       this.walletLink = _const.urlLink + '/?address=' + this.walletAddress
       // 获取信息
-      let data = this.getInfo(sessionStorage.getItem("walletAddress"))
-      if (data === "" || data === null) {
-        this.walletGas = 0.000021
-        this.cashBalance = 0
-        imToken.callAPI('native.toastInfo', '用户不存在或者其他错误')
-      } else {
-        this.walletGas = data.gas || 0.000021
-        this.cashBalance = this.cal.accSub((data.receiveAmountEth || 0), (data.withdrawAmountEth || 0))
-      }
+      this.$axios.post(_const.url + "/aceWeb/operateBtt/operateAccount", this.qs.stringify({ "address": sessionStorage.getItem("walletAddress") })).then(res => {
+        let data = res.data.data
+        console.log(data)
 
+        if (data === "" || data === null) {
+          this.walletGas = 0.000021
+          this.cashBalance = 0
+          imToken.callAPI('native.toastInfo', '用户不存在或者其他错误')
+        } else {
+          this.walletGas = data.gas || 0.000021
+          this.cashBalance = this.cal.accSub((data.receiveAmountEth || 0), (data.withdrawAmountEth || 0))
+        }
+      }).catch(error => {
+        imToken.callAPI('native.toastInfo', '系统错误，请稍后重试...')
+        console.log(error);
+      });
     }
   }
 }

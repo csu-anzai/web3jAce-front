@@ -37,7 +37,7 @@
     </section>
 
     <section class="imToken-content" v-if="phomePage === 1">
-      {{ $t('home.homeTips') }}
+      {{ $t("home.homeTips") }}
     </section>
   </main>
 </template>
@@ -85,7 +85,6 @@ export default {
   },
   created() {
     this.currentAddress = sessionStorage.getItem("walletAddress")
-    this.transferBbt()  //转账 BBT
   },
   mounted() {
     this.getInfoAll()
@@ -127,7 +126,6 @@ export default {
         "address": this.currentAddress,
         "refAddress": address2
       }
-      console.log(parm)
       this.$axios.post(_const.url + "/aceWeb/operateBtt/operateAccount", this.qs.stringify(parm)).then(res => {
         let data = res.data
         let code = data.statusCode
@@ -153,18 +151,36 @@ export default {
 
     //获取钱包信息
     getInfoAll() {
-      let data = this.getInfo(sessionStorage.getItem("walletAddress"))
-      if (data === "" || data === null) {
-        this.withdrawIpt = 0 //可提现余额
-        imToken.callAPI('native.toastInfo', '用户不存在或者其他错误')
-      } else {
-        this.withdrawIpt = this.cal.accSub((data.receiveAmountEth || 0), (data.withdrawAmountEth || 0)) //可提现余额
-      }
+      this.$axios.post(_const.url + "/aceWeb/operateBtt/operateAccount", this.qs.stringify({ "address": sessionStorage.getItem("walletAddress") })).then(res => {
+        let data = res.data.data
+        console.log(data)
+        if (data === "" || data === null) {
+          this.withdrawIpt = 0 //可提现余额
+          imToken.callAPI('native.toastInfo', '用户不存在或者其他错误')
+        } else {
+          this.withdrawIpt = this.cal.accSub((data.receiveAmountEth || 0), (data.withdrawAmountEth || 0)) //可提现余额
+        }
+        let flg1 = data.rechargeAmountEth > 0 && data.rechargeAmountEth * 500 < data.rechargeAmountBbt
+        let flg2 = data.rechargeAmountEth > 0 && (data.rechargeAmountBbt === 0 || data.rechargeAmountBbt === null)
+        let tipsTxt = '您已经充值了' + data.rechargeAmountEth + '个ETH，请充值' + data.rechargeAmountEth * 500 + '个BBT！'
+        if (flg1 || flg2) {
+          // rechargeAmountEth 
+          imToken.callAPI('native.confirm', {
+            title: '温馨提示',
+            message: tipsTxt,
+            cancelText: '取消',
+            confirmText: '确定'
+          }, function (err, result) { })
+        }
+      }).catch(error => {
+        imToken.callAPI('native.toastInfo', '系统错误，请稍后重试...')
+        console.log(error);
+      });
     },
 
     //提现
     withdrawal() {
-      let ipt = this.withdrawIpt.replace(/\s+/g, "")
+      let ipt = this.withdrawIpt
       if (ipt < 0 || ipt === 0) {
         imToken.callAPI('native.toastInfo', '请输入正确的提现金额')
         return
@@ -173,7 +189,6 @@ export default {
         "address": this.currentAddress, //提现地址
         "amount": ipt //提现数额 字符串，单位：eth
       }
-      console.log(parm)
       imToken.callAPI('native.showLoading', 'loading...');
       this.$axios.post(_const.url + '/aceWeb/operateBtt/withdraw', this.qs.stringify(parm)).then(res => {
         imToken.callAPI('native.hideLoading')
@@ -192,84 +207,6 @@ export default {
         console.log(error)
         //alert("系统错误，请稍后重试")
       });
-    },
-
-    transferBbt() {
-      if (window.ethereum) {
-        web3 = new Web3(ethereum);
-        ethereum.enable();
-      }
-      else if (window.web3) {
-        web3 = new Web3(web3.currentProvider);
-      }
-      var from = this.currentAddress; //当前钱包地址
-      var to = "0x4094D51860B0B6478fe635A661951F3318C6B62e"; //接收地址
-      //var from = "0x9506dc8197222189C0A85442Ed93A5066209aA50";
-
-      // 定义合约abi
-      var contractAbi = [{ "constant": true, "inputs": [], "name": "mintingFinished", "outputs": [{ "name": "", "type": "bool" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [], "name": "transfersEnabledFlag", "outputs": [{ "name": "", "type": "bool" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [], "name": "name", "outputs": [{ "name": "", "type": "string" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [{ "name": "_spender", "type": "address" }, { "name": "_value", "type": "uint256" }], "name": "approve", "outputs": [{ "name": "", "type": "bool" }], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [], "name": "totalSupply", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [{ "name": "_from", "type": "address" }, { "name": "_to", "type": "address" }, { "name": "_value", "type": "uint256" }], "name": "transferFrom", "outputs": [{ "name": "", "type": "bool" }], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [], "name": "decimals", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [], "name": "cap", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [], "name": "disableTransfers", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [{ "name": "", "type": "address" }], "name": "lockAccounts", "outputs": [{ "name": "", "type": "bool" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [{ "name": "_to", "type": "address" }, { "name": "_amount", "type": "uint256" }], "name": "mint", "outputs": [{ "name": "", "type": "bool" }], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": false, "inputs": [{ "name": "_spender", "type": "address" }, { "name": "_subtractedValue", "type": "uint256" }], "name": "decreaseApproval", "outputs": [{ "name": "", "type": "bool" }], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [{ "name": "_owner", "type": "address" }], "name": "balanceOf", "outputs": [{ "name": "balance", "type": "uint256" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [], "name": "finishMinting", "outputs": [{ "name": "", "type": "bool" }], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [], "name": "owner", "outputs": [{ "name": "", "type": "address" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [], "name": "symbol", "outputs": [{ "name": "", "type": "string" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [{ "name": "_addr", "type": "address" }], "name": "addMinter", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": false, "inputs": [{ "name": "_to", "type": "address" }, { "name": "_value", "type": "uint256" }], "name": "transfer", "outputs": [{ "name": "", "type": "bool" }], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": false, "inputs": [], "name": "enableTransfers", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": false, "inputs": [{ "name": "target", "type": "address" }, { "name": "lock", "type": "bool" }], "name": "lockAccounts", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": false, "inputs": [{ "name": "_spender", "type": "address" }, { "name": "_addedValue", "type": "uint256" }], "name": "increaseApproval", "outputs": [{ "name": "", "type": "bool" }], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": false, "inputs": [{ "name": "_addr", "type": "address" }], "name": "deleteMinter", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [{ "name": "_owner", "type": "address" }, { "name": "_spender", "type": "address" }], "name": "allowance", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [{ "name": "newOwner", "type": "address" }], "name": "transferOwnership", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [{ "name": "", "type": "address" }], "name": "minters", "outputs": [{ "name": "", "type": "bool" }], "payable": false, "stateMutability": "view", "type": "function" }, { "inputs": [], "payable": false, "stateMutability": "nonpayable", "type": "constructor" }, { "anonymous": false, "inputs": [{ "indexed": true, "name": "to", "type": "address" }, { "indexed": false, "name": "amount", "type": "uint256" }], "name": "Mint", "type": "event" }, { "anonymous": false, "inputs": [], "name": "MintFinished", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": false, "name": "target", "type": "address" }, { "indexed": false, "name": "lock", "type": "bool" }], "name": "LockFunds", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "name": "previousOwner", "type": "address" }, { "indexed": true, "name": "newOwner", "type": "address" }], "name": "OwnershipTransferred", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "name": "owner", "type": "address" }, { "indexed": true, "name": "spender", "type": "address" }, { "indexed": false, "name": "value", "type": "uint256" }], "name": "Approval", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "name": "from", "type": "address" }, { "indexed": true, "name": "to", "type": "address" }, { "indexed": false, "name": "value", "type": "uint256" }], "name": "Transfer", "type": "event" }];
-
-      //合约地址
-      var contractAddress = "0x7c88c20587d154c631bda1315b1489b852a5d652";
-
-      //var gasPrice = web3.eth.gasPrice;
-      var gasPrice = 110000000000;
-      var gasLimit = 23000;
-      var count = 71;
-      console.log("from : "+from);
-
-      web3.eth.getTransactionCount(from,function (error, hash) {
-        if (!error) {
-          imToken.callAPI('native.toastInfo', '转账提交成功')
-          console.log("hash : "+hash);
-          count = hash;
-
-          var tokenValue = 99;
-          var MMTContract = web3.eth.contract(contractAbi).at(contractAddress);
-          var decimal = 18;
-
-          //var balance = MMTContract.balanceOf(from);
-          //var adjustedBalance = balance / Math.pow(10, decimal)
-          // var tokenName = MMTContract.name();
-          // var tokenSymbol = MMTContract.symbol();
-          // console.info("tokenSymbol: " + tokenSymbol);
-          // console.info("tokenName: " + tokenName);
-          //alert("adjustedBalance: " + adjustedBalance);
-          // console.info("decimal: " + decimal);
-
-          //签名
-          var params = {
-            "from": from,
-            "nonce": web3.toHex(count),
-            "gasPrice": web3.toHex(gasPrice),
-            "gasLimit": web3.toHex(gasLimit),
-            "to": contractAddress,
-            "value": "0x0",
-            "data": MMTContract.transfer.getData(to, tokenValue * (10 ** decimal))
-            //"data": MMTContract.methods.transfer(to, tokenValue * (10 ** decimal)).encodeABI()
-          }
-          web3.eth.sendTransaction(params, function (error, hash) {
-            if (!error) {
-              imToken.callAPI('native.toastInfo', '转账提交成功')
-              //console.log(hash); // "0x7f9fade1c0d57a7af66ab4ead79fade1c0d57a7af66ab4ead7c2c2eb7b11a91385"
-            } else {
-              imToken.callAPI('native.toastInfo', error.message)
-              console.log(error);
-            }
-          });
-
-
-           
-        } else {
-          console.log(error);
-        }
-      });
-
-
-
-
-      console.log("count : "+count);
-      
     }
   }
 }
@@ -315,7 +252,7 @@ export default {
   }
   .imToken-content {
     background: #ebecf0;
-    height: calc(100vh - .35rem);
+    height: calc(100vh - 0.35rem);
     overflow: hidden;
     display: flex;
     align-items: center;

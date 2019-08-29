@@ -39,12 +39,13 @@ Vue.config.productionTip = false
 Vue.prototype.getInfo = async (address) => {
   this.$axios.post(_const.url + "/aceWeb/operateBtt/operateAccount", this.qs.stringify({"address": address})).then(res => {
     let data = res.data.data
+    console.log(data)
+    console.log("返回信息结束")
     return data
   }).catch(error => {
     imToken.callAPI('native.toastInfo', '系统错误，请稍后重试...')
     console.log(error);
   });
-  
 }
 
 /* eslint-disable no-new */
