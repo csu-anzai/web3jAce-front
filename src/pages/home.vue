@@ -37,7 +37,10 @@
     </section>
 
     <section class="imToken-content" v-if="phomePage === 1">
-      {{ $t("home.homeTips") }}
+      <section>
+        <img src="../assets/image/error.png" alt="">
+        {{ $t("home.homeTips") }}
+      </section>
     </section>
   </main>
 </template>
@@ -270,12 +273,22 @@ export default {
     }
   }
   .imToken-content {
-    background: #ebecf0;
+    background: #151515;
     height: calc(100vh - 0.35rem);
+    color: #D9D2C3;
     overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    font-size: .37rem;
+    @extend %flexCenter;
+    flex-direction: column;
+    section {
+      @extend %flexCenter;
+      flex-direction: column;
+      img {
+        width: 2.7rem;
+        height: 2.7rem;
+        margin-bottom: 1.65rem;
+      }
+    }
   }
 }
 </style>

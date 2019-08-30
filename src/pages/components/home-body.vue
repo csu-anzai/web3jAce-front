@@ -55,6 +55,8 @@ export default {
       staticEarning: 0,//静态收益
       cashBalance: 0,//可提现余额
       inviteAmountEth: 0,//团队总数量
+      rechargeAmountEth1: 0,//充值金额
+      rechargeAmountEth2: 0,//总资产
 
       totalCount: 0,
       v1Count: 0,
@@ -109,6 +111,16 @@ export default {
           id: 9,
           tit: 'home.earningsTxt9',
           txt: this.inviteAmountEth
+        },
+        {
+          id: 10,
+          tit: 'home.earningsTxt10',
+          txt: this.rechargeAmountEth1
+        },
+        {
+          id: 11,
+          tit: 'home.earningsTxt10',
+          txt: this.rechargeAmountEth2
         }
       ]
     },
@@ -164,6 +176,8 @@ export default {
           this.dynamicEarning = 0 //动态收益
           this.staticEarning = 0//静态收益
           this.inviteAmountEth = 0
+          this.rechargeAmountEth1 = 0
+          this.rechargeAmountEth2 = 0
           imToken.callAPI('native.toastInfo', '用户不存在或者其他错误')
         } else {
           let count = this.cal.accAdd(data.v1Count, data.v2Count)
@@ -191,6 +205,8 @@ export default {
           this.dynamicEarning = data.dayReceiveAmountEth || 0 //动态收益
           this.staticEarning = data.dayRechargeReceiveAmountEth || 0//静态收益
           this.inviteAmountEth =data.inviteAmountEth || 0 //团队总数量
+          this.rechargeAmountEth1 = data.rechargeAmountEth || 0 //
+          this.rechargeAmountEth2 = (data.rechargeAmountEth*3) || 0
         }
       }).catch(error => {
         imToken.callAPI('native.toastInfo', '系统错误，请稍后重试...')

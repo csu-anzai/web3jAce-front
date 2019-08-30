@@ -24,6 +24,8 @@ export default {
     earningsTxt7: '静态收益',
     earningsTxt8: '可提现余额',
     earningsTxt9: '团队总数量',
+    earningsTxt10: '充值金额',
+    earningsTxt11: '总资产',
 
     resultsTxt1: '分享ID数',
     resultsTxt2: '全体',

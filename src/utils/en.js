@@ -23,7 +23,9 @@ export default {
     earningsTxt6: 'Dynamic earnings',
     earningsTxt7: 'Static earnings',
     earningsTxt8: 'Balance',
-    earningsTxt9: 'Total number teams',
+    earningsTxt9: 'Team Amount',
+    earningsTxt10: 'Deposit Amount',
+    earningsTxt11: 'Total Assets',
 
     resultsTxt1: 'Shared IDs',
     resultsTxt2: 'All',
