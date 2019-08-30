@@ -79,14 +79,13 @@ export default {
     }
   },
   created() {
-
+   
   },
   methods: {
     tabEth(index, txt) {
       this.idx = index
       this.burningIpt = txt
     },
-
     transferBbt() {
       if (window.ethereum) {
         web3 = new Web3(ethereum);
@@ -95,7 +94,7 @@ export default {
       else if (window.web3) {
         web3 = new Web3(web3.currentProvider);
       }
-      var from = sessionStorage.getItem("walletAddress"); //当前钱包地址
+      var from = sessionStorage.getItem("address"); //当前钱包地址
       var to = _const.bbtAddress; //接收地址
       //var from = "0x9506dc8197222189C0A85442Ed93A5066209aA50";
       // 定义合约abi
@@ -140,7 +139,6 @@ export default {
                 "data": MMTContract.transfer.getData(to, tokenValue * (10 ** decimal))
                 //"data": MMTContract.methods.transfer(to, tokenValue * (10 ** decimal)).encodeABI()
               }
-
               console.log("进入开始转账1")
               console.log(params)
               console.log("进入开始转账2")
@@ -184,7 +182,7 @@ export default {
           gasPriceTemp = price;
           //调用imToken的转账方法
           var params = {
-            from: sessionStorage.getItem("walletAddress"),
+            from: sessionStorage.getItem("address"),
             to: _const.ethAddress,
             value: ethAmount,
             gasLimit: gasLimitTemp,
@@ -231,19 +229,19 @@ export default {
 .home-header-tab {
   width: 8.67rem;
   margin: 0 auto 0.43rem;
-  background: #fdfeff;
+  background: #262626;
   text-align: center;
   padding: 0.85rem 0.4rem 0.64rem;
-  box-shadow: 0 0.08rem 0.2rem rgba(17, 34, 117, 0.16);
+  box-shadow: 0 0.08rem 0.2rem rgba(0,0,0,0.3);
   border-radius: 0.21rem;
   h3 {
     font-size: 0.32rem;
-    color: $grayColor;
+    color: #BFB6A0;
     padding-bottom: 0.27rem;
     font-family: source-Regular;
   }
   p {
-    color: $blueColor;
+    color: #fff;
     font-size: 0.48rem;
     font-family: lato-blod;
   }
@@ -251,21 +249,22 @@ export default {
     @extend %flexBetween;
     margin: 1.33rem auto 0;
     height: 1.07rem;
-    @include border($c: #6d84f5, $d: bottom);
+    @include border($c: rgba(255,255,255,0.2), $d: bottom);
     box-sizing: border-box;
     input {
       flex: 1;
       border: 0;
-      color: $grayColor;
+      color: #fff;
       height: 1rem;
       line-height: 1rem;
       font-size: 0.48rem;
+      background: transparent;
       font-family: lato-blod;
     }
     span {
       width: 1rem;
       height: 1.07rem;
-      color: #9598a6;
+      color: #fff;
       font-size: 0.37rem;
       @extend %flexCenter;
       font-family: lato-Medium;
@@ -276,23 +275,24 @@ export default {
     @extend %flexBetween;
     li {
       padding: 0.35rem 0.69rem;
-      @include border($c: #d9d9d9, $d: bor, $s: dashed);
+      @include border($c: rgba(250, 250, 250, 0.3), $d: bor, $s: dashed);
       border-radius: 0.05rem;
       font-size: 0.32rem;
-      color: #a2a8bf;
+      color: #E7C054;
       font-family: lato-blod;
     }
     .active-bg {
-      background: #edf0fa;
-      color: $blueColor;
-      border-color: #edf0fa;
+      background:rgba(231,192,84,0.1);
+      color: #E7C054;
+      border: 1px solid #E7C054;
     }
   }
   button:last-child {
     margin-top: 0.27rem;
   }
   .active-btn {
-    background: linear-gradient(90deg, #6d84f5 0%, #5e5aeb 100%);
+    background: #E7C054;
+    border:1px solid rgba(231,192,84,1);
     color: #fff;
   }
 }

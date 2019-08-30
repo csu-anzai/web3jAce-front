@@ -32,13 +32,13 @@ ul {
   padding: 1.04rem 0.4rem 0.33rem;
   li {
     @extend %flexBetween2;
-    color: $blueColor;
+    color: #E7C054;
     font-family: source-Regular;
     span:first-child {
       position: relative;
       width: 3.93rem;
       padding: 0 0 0.69rem 0.67rem;
-      color: #7a8099;
+      color: #D9D2C3;
       font-size: 0.37rem;
       &::before {
         content: "";
@@ -48,7 +48,7 @@ ul {
         top: 0.1rem;
         left: -0.04rem;
         border-radius: 50%;
-        background: $blueColor;
+        background: #E7C054;
       }
       &::after {
         content: "";
@@ -57,7 +57,7 @@ ul {
         position: absolute;
         top: .26rem;
         left: .036rem;
-        background: #e6e6e6;
+        background: rgba(255,255,255,.1);
       }
     }
     &:last-child span:first-child::after {

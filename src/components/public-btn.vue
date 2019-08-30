@@ -28,8 +28,9 @@ button {
   background: #fff;
   font-size: .37rem;
   box-sizing: border-box;
-  @include border($c: #6d84f5,$d: bor);
-  color: $blueColor;
+  @include border($c: rgba(255,255,255,.3),$d: bor);
+  color: #E7C054;
+  background: #262626;
   font-family: source-Regular;
 }
 </style>

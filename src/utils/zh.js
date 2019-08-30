@@ -23,6 +23,7 @@ export default {
     earningsTxt6: '动态收益',
     earningsTxt7: '静态收益',
     earningsTxt8: '可提现余额',
+    earningsTxt9: '团队总数量',
 
     resultsTxt1: '分享ID数',
     resultsTxt2: '全体',
@@ -33,7 +34,9 @@ export default {
     addressIpt: '请输入被邀请人钱包地址',
     amountIpt: '请输入提现金额',
 
-    homeTips: '请使用imToken浏览器打开使用'
+    homeTips: '请使用imToken浏览器打开使用',
+
+    loginBtn: '获取当前钱包地址'
   },
 
   withdraw: {

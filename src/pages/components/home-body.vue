@@ -54,6 +54,7 @@ export default {
       dynamicEarning: 0,//动态收益
       staticEarning: 0,//静态收益
       cashBalance: 0,//可提现余额
+      inviteAmountEth: 0,//团队总数量
 
       totalCount: 0,
       v1Count: 0,
@@ -103,6 +104,11 @@ export default {
           id: 8,
           tit: 'home.earningsTxt8',
           txt: this.cashBalance + ' ETH'
+        },
+        {
+          id: 9,
+          tit: 'home.earningsTxt9',
+          txt: this.inviteAmountEth
         }
       ]
     },
@@ -140,7 +146,7 @@ export default {
       this.idx = index
     },
     getInfoAll() {
-      this.$axios.post(_const.url + "/aceWeb/operateBtt/operateAccount", this.qs.stringify({ "address": sessionStorage.getItem("walletAddress") })).then(res => {
+      this.$axios.post(_const.url + "/aceWeb/operateBtt/operateAccount", this.qs.stringify({ "address": sessionStorage.getItem("address") })).then(res => {
         let data = res.data.data
         console.log(data)
         console.log("body结束")
@@ -157,6 +163,7 @@ export default {
           this.version = '--' //VIP级别
           this.dynamicEarning = 0 //动态收益
           this.staticEarning = 0//静态收益
+          this.inviteAmountEth = 0
           imToken.callAPI('native.toastInfo', '用户不存在或者其他错误')
         } else {
           let count = this.cal.accAdd(data.v1Count, data.v2Count)
@@ -183,6 +190,7 @@ export default {
           this.version = data.version || '--' //VIP级别
           this.dynamicEarning = data.dayReceiveAmountEth || 0 //动态收益
           this.staticEarning = data.dayRechargeReceiveAmountEth || 0//静态收益
+          this.inviteAmountEth =data.inviteAmountEth || 0 //团队总数量
         }
       }).catch(error => {
         imToken.callAPI('native.toastInfo', '系统错误，请稍后重试...')
@@ -197,13 +205,13 @@ export default {
 @import "../../assets/styless/public";
 .home-body {
   width: 9.47rem;
-  background: #fff;
+  background: #262626;
   margin: 0 auto;
   border-radius: 0.21rem 0.21rem 0 0;
   ul {
     @extend %flexBetween;
     margin: 0 auto;
-    @include border($d: bottom);
+    @include border($d: bottom,$c: rgba(255,255,255,.1));
     height: 1.28rem;
     box-sizing: border-box;
     padding: 0 1.07rem;
@@ -212,14 +220,14 @@ export default {
       height: 1.28rem;
       box-sizing: border-box;
       @extend %flexCenter;
-      color: #a2a8bf;
+      color: #999180;
       font-size: 0.4rem;
       font-family: source-Medium;
       @include border($w: 0.04rem, $c: transparent, $d: bottom);
     }
     .active-color {
-      border-color: #6d84f5;
-      color: $blueColor;
+      border-color: #E7C054;
+      color: #E7C054;
     }
   }
 }

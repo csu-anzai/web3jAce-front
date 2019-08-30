@@ -112,21 +112,20 @@ nav {
     top: 1.17rem;
     left: 0;
     right: 0;
-    background: #fff;
+    background: #262626;
     z-index: 99;
-    color: #000;
     width: 10rem;
     margin: 0 auto;
     li {
       @extend %flexCenter;
       height: 1.17rem;
-      color: #A2A8BF;
+      color: #BFB6A0;
       font-size: .37rem;
       font-family: source-Regular;
     }
     & .active-nav {
-      color: $blueColor;
-      background:#edf0fa;
+      color: #fff;
+      background:#E7C054;
     }
   }
 }

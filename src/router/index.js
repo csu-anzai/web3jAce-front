@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
+const Index = () => import('@/pages/index')
 const Home = () => import('@/pages/home')
 const Withdraw = () => import('@/pages/withdraw/withdraw')
 const UpdateWithdraw = () => import('@/pages/update-withdraw/update-withdraw')
@@ -11,8 +12,8 @@ var router = new Router({
   routes: [
     {
       path: '/',
-      name: 'home',
-      component: Home,
+      name: 'index',
+      component: Index,
     },
     {
       path: '/withdraw',
@@ -23,6 +24,11 @@ var router = new Router({
       path: '/updateWithdraw',
       name: 'updateWithdraw',
       component: UpdateWithdraw,
+    },
+    {
+      path: '/home',
+      name: 'home',
+      component: Home,
     }
   ],
   scrollBehavior: function (to, from, savedPosition) {

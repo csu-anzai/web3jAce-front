@@ -77,17 +77,17 @@ export default {
       toastTxt: '',
 
       currentAddress: '',
-      phomePage: 1
+      phomePage: 0
     }
   },
   computed: {
 
   },
   created() {
-    this.currentAddress = sessionStorage.getItem("walletAddress")
+    
   },
   mounted() {
-    this.getInfoAll()
+    let that = this
     /**
      * 判断是否是 imToken 环境
      */
@@ -101,6 +101,23 @@ export default {
       document.getElementsByTagName('canvas')[0].style.visibility = "hidden"
     } else {
       document.getElementsByTagName('canvas')[0].style.visibility = "visible"
+    }
+
+    // 判断是否授权
+    let address = sessionStorage.getItem("address")
+    if (address === "" || address === null) {
+      let tipsTxt = '获取钱包信息失败，请重新获取！'
+      imToken.callAPI('native.confirm', {
+        title: '温馨提示',
+        message: tipsTxt,
+        cancelText: '取消',
+        confirmText: '确定'
+      }, function (err, result) {
+        that.$router.push({ path: '/' })
+      })
+    } else {
+      that.getInfoAll()
+      that.currentAddress = address
     }
   },
   destroyed() {
@@ -151,7 +168,7 @@ export default {
 
     //获取钱包信息
     getInfoAll() {
-      this.$axios.post(_const.url + "/aceWeb/operateBtt/operateAccount", this.qs.stringify({ "address": sessionStorage.getItem("walletAddress") })).then(res => {
+      this.$axios.post(_const.url + "/aceWeb/operateBtt/operateAccount", this.qs.stringify({ "address": sessionStorage.getItem("address") })).then(res => {
         let data = res.data.data
         console.log(data)
         if (data === "" || data === null) {
@@ -215,7 +232,7 @@ export default {
 <style scoped lang="scss">
 @import "../assets/styless/public";
 .home {
-  background: #ebecf0;
+  background: #161616;
   padding-bottom: 0.35rem;
   .home-header {
     height: 8.68rem;
@@ -231,7 +248,7 @@ export default {
   .btn-list {
     @extend %flexCenter;
     flex-direction: column;
-    background: #fff;
+    background: #262626;
     padding: 0.29rem 0 0.75rem;
     border-radius: 0 0 0.21rem 0.21rem;
     button {
@@ -246,8 +263,10 @@ export default {
       margin-top: 0.27rem;
       padding: 0.35rem 0;
       border: 0;
-      @include border($d: bottom);
+      @include border($d: bottom,$c: rgba(250,250,250,.3));
       border-radius: 0;
+      background: transparent;
+      color: #fff;
     }
   }
   .imToken-content {

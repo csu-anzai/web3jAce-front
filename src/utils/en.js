@@ -23,6 +23,7 @@ export default {
     earningsTxt6: 'Dynamic earnings',
     earningsTxt7: 'Static earnings',
     earningsTxt8: 'Balance',
+    earningsTxt9: 'Total number teams',
 
     resultsTxt1: 'Shared IDs',
     resultsTxt2: 'All',
@@ -33,7 +34,9 @@ export default {
     addressIpt: "Please enter the invitee's wallet address",
     amountIpt: 'Please enter the withdrawal amount',
 
-    homeTips: 'Please use imToken browser to open it.'
+    homeTips: 'Please use imToken browser to open it.',
+
+    loginBtn: 'Get wallet address'
   },
 
   withdraw: {

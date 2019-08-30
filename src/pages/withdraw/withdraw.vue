@@ -61,7 +61,7 @@ export default {
   destroyed() { },
   methods: {
     returnPage() {
-      this.$router.push({ path: '/' })
+      this.$router.push({ path: '/home' })
     },
 
     setPage() {
@@ -69,13 +69,13 @@ export default {
     },
 
     getGas() {
-      this.walletAddress = sessionStorage.getItem("walletAddress")
+      this.walletAddress = sessionStorage.getItem("address")
       this.walletLink = _const.urlLink + '/?address=' + this.walletAddress
-      // 获取信息
-      this.$axios.post(_const.url + "/aceWeb/operateBtt/operateAccount", this.qs.stringify({ "address": sessionStorage.getItem("walletAddress") })).then(res => {
-        let data = res.data.data
-        console.log(data)
 
+      // 获取信息
+      this.$axios.post(_const.url + "/aceWeb/operateBtt/operateAccount", this.qs.stringify({ "address": this.walletAddress })).then(res => {
+        let data = res.data.data
+        //console.log(data)
         if (data === "" || data === null) {
           this.walletGas = 0.000021
           this.cashBalance = 0
@@ -99,11 +99,10 @@ main {
   display: flex;
   flex-direction: column;
   height: 100vh;
-  background: #f5f6fa;
+  background: #262626;;
   header {
-    background: #fff;
     h2 {
-      color: #1a1d33;
+      color: #fff;
       font-size: 0.48rem;
       padding-top: 0.76rem;
       text-align: center;
@@ -115,12 +114,12 @@ main {
         padding: 0.37rem 0.4rem;
         @include border($d: bottom);
         p {
-          color: #6f7280;
+          color: #fff;
           font-size: 0.32rem;
           font-family: source-Regular;
           &:first-child {
             font-size: 0.37rem;
-            color: $grayColor;
+            color: #BFB6A0;
             padding-bottom: 0.27rem;
             font-family: lato-blod;
           }
@@ -137,10 +136,10 @@ main {
       @extend %flexBetween;
       width: 100%;
       font-size: 0.37rem;
-      color: #6f7280;
+      color: #fff;
       font-family: source-Regular;
       span:first-child {
-        color: #1a1d33;
+        color: #BFB6A0;
         font-family: lato-blod;
       }
     }
