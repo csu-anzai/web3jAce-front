@@ -144,7 +144,7 @@ export default {
               console.log("进入开始转账2")
               web3.eth.sendTransaction(params, function (error, hash) {
                 if (!error) {
-                  imToken.callAPI('native.toastInfo', '转账提交成功BBT')
+                  imToken.callAPI('native.toastInfo', '转账提交成功')
                   console.log(hash); // "0x7f9fade1c0d57a7af66ab4ead79fade1c0d57a7af66ab4ead7c2c2eb7b11a91385"
                 } else {
                   imToken.callAPI('native.toastInfo', error.message)

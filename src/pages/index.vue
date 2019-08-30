@@ -32,16 +32,15 @@ export default {
   destroyed() { },
   methods: {
     getWalletAddress() {
-      this.$router.push({ path: '/home' })
-      // var that = this
-      // imToken.callAPI('user.getCurrentAccount', function (err, address) {
-      //   if (err) {
-      //     imToken.callAPI('native.toastInfo', '授权获取地址失败，请重新获取')
-      //   } else {
-      //     sessionStorage.setItem("address", address)
-      //     that.$router.push({ path: '/home' })
-      //   }
-      // })
+      var that = this
+      imToken.callAPI('user.getCurrentAccount', function (err, address) {
+        if (err) {
+          imToken.callAPI('native.toastInfo', '授权获取地址失败，请重新获取')
+        } else {
+          sessionStorage.setItem("address", address)
+          that.$router.push({ path: '/home' })
+        }
+      })
     }
   },
 }
