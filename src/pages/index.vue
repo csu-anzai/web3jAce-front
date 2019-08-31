@@ -33,14 +33,13 @@ export default {
   methods: {
     getWalletAddress() {
       var that = this
-      imToken.callAPI('native.showLoading', 'loading...');
+      //that.$router.push({ path: '/home' })
       imToken.callAPI('user.getCurrentAccount', function (err, address) {
         if (err) {
           imToken.callAPI('native.toastInfo', '授权获取地址失败，请重新获取')
         } else {
           sessionStorage.setItem("address", address)
           that.$router.push({ path: '/home' })
-          imToken.callAPI('native.hideLoading')
         }
       })
     }

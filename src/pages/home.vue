@@ -54,7 +54,7 @@ import homeMask from './components/home-mask'
 import publicToast from '../components/public-toast'
 
 import homeTab from "./components/home-header-tab";
-import '../utils/homeBgCanvas.js'
+// import '../utils/homeBgCanvas.js'
 
 export default {
   name: 'home',
@@ -100,11 +100,11 @@ export default {
     } else {
       this.phomePage = 0
     }
-    if (this.phomePage === 1) {
-      document.getElementsByTagName('canvas')[0].style.visibility = "hidden"
-    } else {
-      document.getElementsByTagName('canvas')[0].style.visibility = "visible"
-    }
+    // if (this.phomePage === 1) {
+    //   document.getElementsByTagName('canvas')[0].style.visibility = "hidden"
+    // } else {
+    //   document.getElementsByTagName('canvas')[0].style.visibility = "visible"
+    // }
 
     // 判断是否授权
     let address = sessionStorage.getItem("address")
@@ -124,7 +124,7 @@ export default {
     }
   },
   destroyed() {
-    document.getElementsByTagName('canvas')[0].style.visibility = "hidden"
+    //document.getElementsByTagName('canvas')[0].style.visibility = "hidden"
   },
   methods: {
     settle() {
@@ -239,6 +239,7 @@ export default {
   padding-bottom: 0.35rem;
   .home-header {
     height: 8.68rem;
+    @include bgCover('../assets/image/banner.jpg');
   }
   .home-container {
     width: 9.47rem;

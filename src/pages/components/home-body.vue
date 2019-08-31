@@ -119,7 +119,7 @@ export default {
         },
         {
           id: 11,
-          tit: 'home.earningsTxt10',
+          tit: 'home.earningsTxt11',
           txt: this.rechargeAmountEth2
         }
       ]
@@ -158,7 +158,8 @@ export default {
       this.idx = index
     },
     getInfoAll() {
-      this.$axios.post(_const.url + "/aceWeb/operateBtt/operateAccount", this.qs.stringify({ "address": sessionStorage.getItem("address") })).then(res => {
+      //this.$axios.post(_const.url + "/aceWeb/operateBtt/operateAccount", this.qs.stringify({ "address": sessionStorage.getItem("address") })).then(res => {
+      this.$axios.post(_const.url + "/aceWeb/operateBtt/operateAccount", this.qs.stringify({ "address": '0x09ced3ca4a35a636e5e190a1608e4b0299109e8' })).then(res => {
         let data = res.data.data
         console.log(data)
         console.log("body结束")
@@ -187,6 +188,8 @@ export default {
           this.v3Count = data.v3Count || 0
 
           this.nodeLevel = data.area || '--' //节点级别
+          this.version = data.version || '--' //VIP级别
+          
 
           let dayReceive = this.cal.accAdd((data.dayReceiveAmountEth || 0), (data.dayRechargeReceiveAmountEth || 0))
           let superAll = this.cal.accAdd((data.superSubAmountEth || 0), (data.superAllAmountEth || 0))
@@ -201,7 +204,7 @@ export default {
           this.cashBalance = this.cal.accSub((data.receiveAmountEth || 0), (data.withdrawAmountEth || 0)) //可提现余额
 
           this.accuntEarning = data.receiveAmountEth || 0//累计收益
-          this.version = data.version || '--' //VIP级别
+          
           this.dynamicEarning = data.dayReceiveAmountEth || 0 //动态收益
           this.staticEarning = data.dayRechargeReceiveAmountEth || 0//静态收益
           this.inviteAmountEth =data.inviteAmountEth || 0 //团队总数量
