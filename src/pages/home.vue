@@ -109,6 +109,7 @@ export default {
     // 判断是否授权
     let address = this.$route.query.walletAddress
     console.log("当前钱包地址：" + address)
+    this.currentAddress = address
     if (address === "" || address === null) {
       let tipsTxt = '获取钱包信息失败，请重新获取！'
       imToken.callAPI('native.confirm', {
@@ -120,8 +121,7 @@ export default {
         that.$router.push({ path: '/' })
       })
     } else {
-      that.getInfoAll()
-      that.currentAddress = this.$route.query.walletAddress
+      this.getInfoAll()
     }
   },
   destroyed() {
@@ -175,7 +175,7 @@ export default {
     //获取钱包信息
     getInfoAll() {
       var that = this
-      that.$axios.post(_const.url + "/aceWeb/operateBtt/operateAccount", that.qs.stringify({ "address": this.currentAddress })).then(res => {
+      that.$axios.post(_const.url + "/aceWeb/operateBtt/operateAccount", that.qs.stringify({ "address": this.$route.query.walletAddress })).then(res => {
         let data = res.data.data
         console.log(data)
         if (data === "" || data === null) {
