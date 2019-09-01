@@ -30,6 +30,7 @@ export default {
     resultsTxt1: 'Shared IDs',
     resultsTxt2: 'All',
     resultsTxt3: 'Main',
+    homeTotal: 'home',
 
     dataTxt: 'Token burning rate',
 

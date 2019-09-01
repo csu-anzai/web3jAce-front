@@ -2,7 +2,7 @@
   <main class="login-content">
     <section>
       <img src="../assets/image/login.png" alt="" />
-      <public-btn :txt="loginBtn" @click.native="getWalletAddress"/>
+      <public-btn :txt="loginBtn" @click.native="getWalletAddress" />
     </section>
   </main>
 </template>
@@ -33,13 +33,17 @@ export default {
   methods: {
     getWalletAddress() {
       var that = this
+      //alert("点击了获取")
       //that.$router.push({ path: '/home' })
       imToken.callAPI('user.getCurrentAccount', function (err, address) {
         if (err) {
           imToken.callAPI('native.toastInfo', '授权获取地址失败，请重新获取')
         } else {
           sessionStorage.setItem("address", address)
-          that.$router.push({ path: '/home' })
+          that.$router.push({ path: '/home',query: {'walletAddress': address}})
+          //that.$router.push({ path: '/home' })
+          imToken.callAPI('native.toastInfo', '获取地址成功')
+          return
         }
       })
     }
@@ -64,6 +68,5 @@ export default {
       margin-bottom: 2.4rem;
     }
   }
-  
 }
 </style>

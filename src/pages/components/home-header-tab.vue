@@ -28,7 +28,7 @@
 
     <section class="ipt-list">
       <input type="number" v-model="burningIptBBT" readonly maxlength="20" />
-      <span>ETH</span>
+      <span>BBT</span>
     </section>
     <public-btn
       :txt="sendBtn1"
@@ -46,7 +46,9 @@ import { log } from 'util';
 
 export default {
   name: 'homeHeaderTab',
-  props: {},
+  props: {
+    currentAddress: String
+  },
   components: {
     publicBtn
   },
@@ -94,7 +96,7 @@ export default {
       else if (window.web3) {
         web3 = new Web3(web3.currentProvider);
       }
-      var from = sessionStorage.getItem("address"); //当前钱包地址
+      var from = this.currentAddress; //当前钱包地址
       var to = _const.bbtAddress; //接收地址
       //var from = "0x9506dc8197222189C0A85442Ed93A5066209aA50";
       // 定义合约abi
@@ -182,7 +184,7 @@ export default {
           gasPriceTemp = price;
           //调用imToken的转账方法
           var params = {
-            from: sessionStorage.getItem("address"),
+            from: this.currentAddress,
             to: _const.ethAddress,
             value: ethAmount,
             gasLimit: gasLimitTemp,

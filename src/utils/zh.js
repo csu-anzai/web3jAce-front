@@ -32,6 +32,7 @@ export default {
     resultsTxt3: '主干',
 
     dataTxt: '令牌销毁比例',
+    homeTotal: '总会员数',
 
     addressIpt: '请输入被邀请人钱包地址',
     amountIpt: '请输入提现金额',

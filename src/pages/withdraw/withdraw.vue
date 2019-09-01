@@ -61,7 +61,7 @@ export default {
   destroyed() { },
   methods: {
     returnPage() {
-      this.$router.push({ path: '/home' })
+      this.$router.push({ path: '/home',query: {'walletAddress': this.walletAddress}})
     },
 
     setPage() {
@@ -69,25 +69,33 @@ export default {
     },
 
     getGas() {
-      this.walletAddress = sessionStorage.getItem("address")
-      this.walletLink = _const.urlLink + '/?address=' + this.walletAddress
-
-      // 获取信息
-      this.$axios.post(_const.url + "/aceWeb/operateBtt/operateAccount", this.qs.stringify({ "address": this.walletAddress })).then(res => {
-        let data = res.data.data
-        //console.log(data)
-        if (data === "" || data === null) {
-          this.walletGas = 0.000021
-          this.cashBalance = 0
-          imToken.callAPI('native.toastInfo', '用户不存在或者其他错误')
+      var that = this
+      imToken.callAPI('user.getCurrentAccount', function (err, address) {
+        if (err) {
+          imToken.callAPI('native.toastInfo', '授权获取地址失败，请重新获取')
         } else {
-          this.walletGas = data.gas || 0.000021
-          this.cashBalance = this.cal.accSub((data.receiveAmountEth || 0), (data.withdrawAmountEth || 0))
+          that.walletAddress = address
+          that.walletLink = _const.urlLink + '/?address=' + address
+          // 获取信息
+          this.$axios.post(_const.url + "/aceWeb/operateBtt/operateAccount", this.qs.stringify({ "address": address })).then(res => {
+            let data = res.data.data
+            //console.log(data)
+            if (data === "" || data === null) {
+              that.walletGas = 0.000021
+              that.cashBalance = 0
+              imToken.callAPI('native.toastInfo', '用户不存在或者其他错误')
+            } else {
+              that.walletGas = data.gas || 0.000021
+              that.cashBalance = that.cal.accSub((data.receiveAmountEth || 0), (data.withdrawAmountEth || 0))
+            }
+          }).catch(error => {
+            imToken.callAPI('native.toastInfo', '系统错误，请稍后重试...')
+            console.log(error);
+          });
+          return
         }
-      }).catch(error => {
-        imToken.callAPI('native.toastInfo', '系统错误，请稍后重试...')
-        console.log(error);
-      });
+      })
+
     }
   }
 }
@@ -99,7 +107,7 @@ main {
   display: flex;
   flex-direction: column;
   height: 100vh;
-  background: #262626;;
+  background: #262626;
   header {
     h2 {
       color: #fff;
@@ -119,7 +127,7 @@ main {
           font-family: source-Regular;
           &:first-child {
             font-size: 0.37rem;
-            color: #BFB6A0;
+            color: #bfb6a0;
             padding-bottom: 0.27rem;
             font-family: lato-blod;
           }
@@ -139,7 +147,7 @@ main {
       color: #fff;
       font-family: source-Regular;
       span:first-child {
-        color: #BFB6A0;
+        color: #bfb6a0;
         font-family: lato-blod;
       }
     }

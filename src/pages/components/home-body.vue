@@ -31,7 +31,7 @@ export default {
     publicList
   },
   props: {
-
+    currentAddress: String
   },
   data() {
     return {
@@ -158,7 +158,7 @@ export default {
       this.idx = index
     },
     getInfoAll() {
-      this.$axios.post(_const.url + "/aceWeb/operateBtt/operateAccount", this.qs.stringify({ "address": sessionStorage.getItem("address") })).then(res => {
+      this.$axios.post(_const.url + "/aceWeb/operateBtt/operateAccount", this.qs.stringify({ "address": this.currentAddress })).then(res => {
       //this.$axios.post(_const.url + "/aceWeb/operateBtt/operateAccount", this.qs.stringify({ "address": '0x09ced3ca4a35a636e5e190a1608e4b0299109e8' })).then(res => {
         let data = res.data.data
         console.log(data)

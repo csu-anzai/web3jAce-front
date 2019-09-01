@@ -7,9 +7,9 @@
       </header>
 
       <section class="home-container">
-        <home-tab @click="openMak" @exchange="maskShow = true" />
+        <home-tab @click="openMak" @exchange="maskShow = true" :currentAddress="currentAddress"/>
 
-        <home-body />
+        <home-body :currentAddress="currentAddress"/>
 
         <section class="btn-list">
           <public-btn :txt="settleBtn" @click.native="settle" />
@@ -38,7 +38,7 @@
 
     <section class="imToken-content" v-if="phomePage === 1">
       <section>
-        <img src="../assets/image/error.png" alt="">
+        <img src="../assets/image/error.png" alt="" />
         {{ $t("home.homeTips") }}
       </section>
     </section>
@@ -87,7 +87,7 @@ export default {
 
   },
   created() {
-    
+
   },
   mounted() {
     let that = this
@@ -107,7 +107,8 @@ export default {
     // }
 
     // 判断是否授权
-    let address = sessionStorage.getItem("address")
+    let address = this.$route.query.walletAddress
+    console.log("当前钱包地址：" + address)
     if (address === "" || address === null) {
       let tipsTxt = '获取钱包信息失败，请重新获取！'
       imToken.callAPI('native.confirm', {
@@ -120,7 +121,7 @@ export default {
       })
     } else {
       that.getInfoAll()
-      that.currentAddress = address
+      that.currentAddress = this.$route.query.walletAddress
     }
   },
   destroyed() {
@@ -129,6 +130,7 @@ export default {
   methods: {
     settle() {
       this.$router.push({ path: '/withdraw' })
+      return
     },
 
     openMak() {
@@ -141,11 +143,12 @@ export default {
 
     //复制
     invitation() {
-      let address2 = this.invitationIpt.replace(/\s+/g, "")
+      let address2 = this.invitationIpt
       let parm = {
         "address": this.currentAddress,
         "refAddress": address2
       }
+      console.log(parm)
       this.$axios.post(_const.url + "/aceWeb/operateBtt/operateAccount", this.qs.stringify(parm)).then(res => {
         let data = res.data
         let code = data.statusCode
@@ -171,14 +174,15 @@ export default {
 
     //获取钱包信息
     getInfoAll() {
-      this.$axios.post(_const.url + "/aceWeb/operateBtt/operateAccount", this.qs.stringify({ "address": sessionStorage.getItem("address") })).then(res => {
+      var that = this
+      that.$axios.post(_const.url + "/aceWeb/operateBtt/operateAccount", that.qs.stringify({ "address": this.currentAddress })).then(res => {
         let data = res.data.data
         console.log(data)
         if (data === "" || data === null) {
-          this.withdrawIpt = 0 //可提现余额
+          that.withdrawIpt = 0 //可提现余额
           imToken.callAPI('native.toastInfo', '用户不存在或者其他错误')
         } else {
-          this.withdrawIpt = this.cal.accSub((data.receiveAmountEth || 0), (data.withdrawAmountEth || 0)) //可提现余额
+          that.withdrawIpt = that.cal.accSub((data.receiveAmountEth || 0), (data.withdrawAmountEth || 0)) //可提现余额
         }
         let flg1 = data.rechargeAmountEth > 0 && data.rechargeAmountEth * 500 < data.rechargeAmountBbt
         let flg2 = data.rechargeAmountEth > 0 && (data.rechargeAmountBbt === 0 || data.rechargeAmountBbt === null)
@@ -196,6 +200,7 @@ export default {
         imToken.callAPI('native.toastInfo', '系统错误，请稍后重试...')
         console.log(error);
       });
+
     },
 
     //提现
@@ -209,6 +214,7 @@ export default {
         "address": this.currentAddress, //提现地址
         "amount": ipt //提现数额 字符串，单位：eth
       }
+      console.log(parm)
       imToken.callAPI('native.showLoading', 'loading...');
       this.$axios.post(_const.url + '/aceWeb/operateBtt/withdraw', this.qs.stringify(parm)).then(res => {
         imToken.callAPI('native.hideLoading')
@@ -239,7 +245,7 @@ export default {
   padding-bottom: 0.35rem;
   .home-header {
     height: 8.68rem;
-    @include bgCover('../assets/image/banner.jpg');
+    @include bgCover("../assets/image/banner.jpg");
   }
   .home-container {
     width: 9.47rem;
@@ -267,7 +273,7 @@ export default {
       margin-top: 0.27rem;
       padding: 0.35rem 0;
       border: 0;
-      @include border($d: bottom,$c: rgba(250,250,250,.3));
+      @include border($d: bottom, $c: rgba(250, 250, 250, 0.3));
       border-radius: 0;
       background: transparent;
       color: #fff;
@@ -276,9 +282,9 @@ export default {
   .imToken-content {
     background: #151515;
     height: calc(100vh - 0.35rem);
-    color: #D9D2C3;
+    color: #d9d2c3;
     overflow: hidden;
-    font-size: .37rem;
+    font-size: 0.37rem;
     @extend %flexCenter;
     flex-direction: column;
     section {
