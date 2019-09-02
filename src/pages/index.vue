@@ -1,8 +1,15 @@
 <template>
-  <main class="login-content">
-    <section>
+  <main class="login-container">
+      <section class="login-content" v-if="phomePage === 0">
       <img src="../assets/image/login.png" alt="" />
       <public-btn :txt="loginBtn" @click.native="getWalletAddress" />
+    </section>
+
+      <section class="imToken-content" v-if="phomePage === 1">
+      <section>
+        <img src="../assets/image/error.png" alt="" />
+        {{ $t("home.homeTips") }}
+      </section>
     </section>
   </main>
 </template>
@@ -17,14 +24,34 @@ export default {
   props: {},
   data() {
     return {
-      loginBtn: 'home.loginBtn'
+      loginBtn: 'home.loginBtn',
+      phomePage: 0
     }
   },
   computed: {
 
   },
   created() {
+    /**
+     * 判断是否是 imToken 环境
+     */
+    let that = this
+    let flg = !!window.imToken
+    if (!flg) {
+      this.phomePage = 1
+    } else {
+      this.phomePage = 0
+    }
 
+    imToken.callAPI('user.getCurrentAccount', function (err, address) {
+      if (err) {
+        imToken.callAPI('native.toastInfo', '授权获取地址失败，请重新获取')
+      } else {
+        that.currentAddress = address
+        console.log(that.currentAddress)
+        return
+      }
+    })
   },
   mounted() {
 
@@ -32,20 +59,7 @@ export default {
   destroyed() { },
   methods: {
     getWalletAddress() {
-      var that = this
-      //alert("点击了获取")
-      //that.$router.push({ path: '/home' })
-      imToken.callAPI('user.getCurrentAccount', function (err, address) {
-        if (err) {
-          imToken.callAPI('native.toastInfo', '授权获取地址失败，请重新获取')
-        } else {
-          sessionStorage.setItem("address", address)
-          that.$router.push({ path: '/home',query: {'walletAddress': address}})
-          //that.$router.push({ path: '/home' })
-          imToken.callAPI('native.toastInfo', '获取地址成功')
-          return
-        }
-      })
+      this.$router.push({ path: '/home', query: { 'walletAddress': this.currentAddress } })
     }
   },
 }
@@ -53,12 +67,13 @@ export default {
 
 <style scoped lang="scss">
 @import "../assets/styless/public";
-.login-content {
-  background: rgba(21, 21, 21, 1);
+.login-container {
+  background: #151515;
   height: 100vh;
   @extend %flexCenter;
+  overflow: hidden;
   flex-direction: column;
-  section {
+  .login-content {
     @extend %flexCenter;
     flex-direction: column;
     width: 4.65rem;
@@ -66,6 +81,20 @@ export default {
       width: 3.6rem;
       height: 3.1rem;
       margin-bottom: 2.4rem;
+    }
+  }
+
+  .imToken-content {
+    color: #d9d2c3;
+    font-size: 0.37rem;
+    section {
+      @extend %flexCenter;
+      flex-direction: column;
+      img {
+        width: 2.7rem;
+        height: 2.7rem;
+        margin-bottom: 1.65rem;
+      }
     }
   }
 }

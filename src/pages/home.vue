@@ -1,47 +1,42 @@
 <template>
   <main class="home">
-    <section v-if="phomePage === 0">
-      <header class="home-header">
-        <home-nav />
-        <home-header />
-      </header>
+    <header class="home-header">
+      <home-nav />
+      <home-header />
+    </header>
 
-      <section class="home-container">
-        <home-tab @click="openMak" @exchange="maskShow = true" :currentAddress="currentAddress"/>
+    <section class="home-container">
+      <home-tab
+        @click="openMak"
+        @exchange="maskShow = true"
+        :currentAddress="currentAddress"
+      />
 
-        <home-body :currentAddress="currentAddress"/>
+      <home-body :currentAddress="currentAddress" />
 
-        <section class="btn-list">
-          <public-btn :txt="settleBtn" @click.native="settle" />
-          <input
-            type="number"
-            :placeholder="$t('home.amountIpt')"
-            v-model="withdrawIpt"
-            maxlength="42"
-          />
-          <public-btn :txt="withdrawBtn" @click.native="withdrawal" />
+      <section class="btn-list">
+        <public-btn :txt="settleBtn" @click.native="settle" />
+        <input
+          type="number"
+          :placeholder="$t('home.amountIpt')"
+          v-model="withdrawIpt"
+          maxlength="42"
+        />
+        <public-btn :txt="withdrawBtn" @click.native="withdrawal" />
 
-          <input
-            type="text"
-            :placeholder="$t('home.addressIpt')"
-            v-model="invitationIpt"
-            maxlength="42"
-          />
-          <public-btn :txt="invitationBtn" @click.native="invitation" />
-        </section>
-      </section>
-
-      <home-mask v-show="maskShow" @close="closeMask" />
-
-      <public-toast v-show="toastShow" :txt="toastTxt" />
-    </section>
-
-    <section class="imToken-content" v-if="phomePage === 1">
-      <section>
-        <img src="../assets/image/error.png" alt="" />
-        {{ $t("home.homeTips") }}
+        <input
+          type="text"
+          :placeholder="$t('home.addressIpt')"
+          v-model="invitationIpt"
+          maxlength="42"
+        />
+        <public-btn :txt="invitationBtn" @click.native="invitation" />
       </section>
     </section>
+
+    <home-mask v-show="maskShow" @close="closeMask" />
+
+    <public-toast v-show="toastShow" :txt="toastTxt" />
   </main>
 </template>
 
@@ -80,7 +75,6 @@ export default {
       toastTxt: '',
 
       currentAddress: '',
-      phomePage: 0
     }
   },
   computed: {
@@ -90,22 +84,6 @@ export default {
 
   },
   mounted() {
-    let that = this
-    /**
-     * 判断是否是 imToken 环境
-     */
-    let flg = !!window.imToken
-    if (!flg) {
-      this.phomePage = 1
-    } else {
-      this.phomePage = 0
-    }
-    // if (this.phomePage === 1) {
-    //   document.getElementsByTagName('canvas')[0].style.visibility = "hidden"
-    // } else {
-    //   document.getElementsByTagName('canvas')[0].style.visibility = "visible"
-    // }
-
     // 判断是否授权
     let address = this.$route.query.walletAddress
     console.log("当前钱包地址：" + address)
@@ -118,15 +96,15 @@ export default {
         cancelText: '取消',
         confirmText: '确定'
       }, function (err, result) {
-        that.$router.push({ path: '/' })
+        this.$router.push({ path: '/' })
       })
     } else {
       this.getInfoAll()
     }
   },
   destroyed() {
-    //document.getElementsByTagName('canvas')[0].style.visibility = "hidden"
-  },            
+    
+  },
   methods: {
     settle() {
       this.$router.push({ path: '/withdraw' })
@@ -277,24 +255,6 @@ export default {
       border-radius: 0;
       background: transparent;
       color: #fff;
-    }
-  }
-  .imToken-content {
-    background: #151515;
-    height: calc(100vh - 0.35rem);
-    color: #d9d2c3;
-    overflow: hidden;
-    font-size: 0.37rem;
-    @extend %flexCenter;
-    flex-direction: column;
-    section {
-      @extend %flexCenter;
-      flex-direction: column;
-      img {
-        width: 2.7rem;
-        height: 2.7rem;
-        margin-bottom: 1.65rem;
-      }
     }
   }
 }

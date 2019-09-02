@@ -12,7 +12,7 @@
     </ul>
 
     <!-- 语言选择 -->
-    <ul v-show="tabShow">
+    <ul class="language-nav" v-show="tabShow">
       <li 
         v-for="(item, index) in itemList"
         :class="idx === index ? 'active-nav' : ''"
@@ -107,7 +107,7 @@ nav {
       }
     }
   }
-  & ul:last-child {
+  .language-nav {
     position: fixed;
     top: 1.17rem;
     left: 0;
