@@ -16,12 +16,16 @@
 
       <section class="btn-list">
         <public-btn :txt="settleBtn" @click.native="settle" />
-        <input
-          type="number"
-          :placeholder="$t('home.amountIpt')"
-          v-model="withdrawIpt"
-          maxlength="42"
-        />
+
+        <section class="ipt-list">
+          <input
+            type="number"
+            :placeholder="$t('home.amountIpt')"
+            v-model="withdrawIpt"
+            maxlength="42"
+          />
+          <img src="../assets/image/tips.png" alt="" @click="openTipsMask">
+        </section>
         <public-btn :txt="withdrawBtn" @click.native="withdrawal" />
 
         <input
@@ -34,7 +38,7 @@
       </section>
     </section>
 
-    <home-mask v-show="maskShow" @close="closeMask" />
+    <home-mask v-show="maskShow" @close="closeMask" :maskPage="maskPage" />
 
     <public-toast v-show="toastShow" :txt="toastTxt" />
   </main>
@@ -69,6 +73,7 @@ export default {
       withdrawBtn: 'home.withdrawBtn',
       invitationBtn: 'home.invitationBtn',
       maskShow: false,
+      maskPage: 1,
       invitationIpt: '', //被邀请人地址
       withdrawIpt: '', //提现金额
       toastShow: false,
@@ -113,6 +118,13 @@ export default {
 
     openMak() {
       this.maskShow = true
+      this.maskPage = 0
+    },
+
+
+    openTipsMask () {
+      this.maskShow = true
+      this.maskPage = 1
     },
 
     closeMask() {
@@ -223,6 +235,7 @@ export default {
   padding-bottom: 0.35rem;
   .home-header {
     height: 8.68rem;
+    width: 10rem;
     @include bgCover("https://dapp.bbtchain.net/images/banner.jpg");
   }
   .home-container {
@@ -249,12 +262,40 @@ export default {
     input {
       width: 8.67rem;
       margin-top: 0.27rem;
-      padding: 0.35rem 0;
+      height: 1rem;
+      line-height: 1rem;
       border: 0;
       @include border($d: bottom, $c: rgba(250, 250, 250, 0.3));
       border-radius: 0;
       background: transparent;
       color: #fff;
+    }
+    .ipt-list {
+      @include border($d: bottom, $c: rgba(250, 250, 250, 0.3));
+      width: 8.67rem;
+      margin-top: 0.27rem;
+      height: 1.2rem;
+      @extend %flexBetween;
+      input {
+        border: 0;
+        border-radius: 0;
+        margin: 0;
+        padding: 0;
+        background: transparent;
+        color: #fff;
+        height: 1.2rem;
+        line-height: 1.2rem;
+      }
+      img {
+        width: .43rem;
+        height: .43rem;
+      }
+    }
+    .transferTips {
+      color: red;
+      width: 8.67rem;
+      font-size: 0.37rem;
+      padding-top: 0.2rem;
     }
   }
 }

@@ -1,6 +1,6 @@
 <template>
   <section class="mask">
-    <section class="mask-content">
+    <section class="mask-content" v-show="maskPage === 0">
       <header>
         <span>{{ $t("mask.title") }}</span>
         <img src="../../assets/image/close.png" alt="" @click="closeMask">
@@ -20,6 +20,12 @@
 
       <public-btn :txt = "maskBtn" @click.native="buyFrom"/>
     </section>
+
+    <!-- tips提示框 -->
+    <section class="mask-content tips-content" v-show="maskPage === 1">
+      <p class="tips-text">{{ $t("home.transferTips") }}</p>
+      <p class="tips-btn" @click="closeMask">我知道了</p>
+    </section>
   </section>
 </template>
 
@@ -27,7 +33,9 @@
 import publicBtn from  "../../components/public-btn";
 export default {
   name: 'homeMask',
-  props: {},
+  props: {
+    maskPage: Number
+  },
   components: {
     publicBtn
   },
@@ -131,6 +139,24 @@ export default {
       width: 7.47rem;
       color: #fff;
     }
+    .tips-text {
+      color: #525252;
+      font-size: .38rem;
+      padding: 0 .66rem;
+      height: 3.09rem;
+      @extend %flexCenter;
+      border-bottom:1px solid rgba(230,230,230,1);
+    }
+    .tips-btn {
+      color: #F5D281;
+      font-size: .38rem;
+      padding: 0;
+      @extend %flexCenter;
+      height: 1.17rem;
+    }
+  }
+  .tips-content {
+    padding: 0;
   }
 }
 </style>

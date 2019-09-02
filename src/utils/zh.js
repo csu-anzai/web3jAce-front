@@ -39,7 +39,9 @@ export default {
 
     homeTips: '请使用imToken浏览器打开使用',
 
-    loginBtn: '获取当前钱包地址'
+    loginBtn: '获取当前钱包地址',
+
+    transferTips: '您提现的手续费由本人承担，每次提现将扣除您账户0.001ETH作为手续费。'
   },
 
   withdraw: {

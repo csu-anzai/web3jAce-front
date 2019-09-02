@@ -39,7 +39,9 @@ export default {
 
     homeTips: 'Please use imToken browser to open it.',
 
-    loginBtn: 'Get wallet address'
+    loginBtn: 'Get wallet address',
+
+    transferTips: 'We charge withdraw fee for every withdrawal. Withdraw fee：0.001 ETH'
   },
 
   withdraw: {
