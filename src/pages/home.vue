@@ -103,7 +103,7 @@ export default {
     }
   },
   destroyed() {
-    
+
   },
   methods: {
     settle() {
@@ -223,7 +223,7 @@ export default {
   padding-bottom: 0.35rem;
   .home-header {
     height: 8.68rem;
-    @include bgCover("../assets/image/banner.jpg");
+    @include bgCover("https://dapp.bbtchain.net/images/banner.jpg");
   }
   .home-container {
     width: 9.47rem;

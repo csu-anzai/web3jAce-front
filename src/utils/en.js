@@ -15,7 +15,7 @@ export default {
     tabTxt2: 'Performance',
     tabTxt3: 'Data',
 
-    earningsTxt1: 'node level',
+    earningsTxt1: 'Node level',
     earningsTxt2: 'VIP Level',
     earningsTxt3: 'Daily earnings',
     earningsTxt4: 'Weighted bonus',
@@ -30,7 +30,7 @@ export default {
     resultsTxt1: 'Shared IDs',
     resultsTxt2: 'All',
     resultsTxt3: 'Main',
-    homeTotal: 'home',
+    homeTotal: 'Home',
 
     dataTxt: 'Token burning rate',
 

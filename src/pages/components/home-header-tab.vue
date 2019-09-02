@@ -74,8 +74,8 @@ export default {
         },
         {
           id: 3,
-          val: '30',
-          txt: '30 ETH'
+          val: '15',
+          txt: '15 ETH'
         }
       ]
     }
