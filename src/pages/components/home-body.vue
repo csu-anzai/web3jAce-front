@@ -129,7 +129,7 @@ export default {
       return [
         {
           id: 1,
-          tit: 'home.',
+          tit: 'home.homeTotal',
           txt: this.totalCount
         },
         {
@@ -151,16 +151,25 @@ export default {
     }
   },
   mounted() {
-    this.getInfoAll()
+    var that = this
+    imToken.callAPI('user.getCurrentAccount', function (err, address) {
+      if (err) {
+        imToken.callAPI('native.toastInfo', '授权获取地址失败，请重新获取')
+      } else {
+        that.getInfoAll(address)
+        return
+      }
+    })
+   
   },
   methods: {
     tabList(index) {
       this.idx = index
     },
-    getInfoAll() {
-      console.log(this.currentAddress);
-      this.$axios.post(_const.url + "/aceWeb/operateBtt/operateAccount", this.qs.stringify({ "address": this.currentAddress })).then(res => {
-      //this.$axios.post(_const.url + "/aceWeb/operateBtt/operateAccount", this.qs.stringify({ "address": '0x09ced3ca4a35a636e5e190a1608e4b0299109e8' })).then(res => {
+    getInfoAll(address) {
+      console.log("获取父级地址:" + address);
+      this.$axios.post(_const.url + "/aceWeb/operateBtt/operateAccount", this.qs.stringify({ "address": address })).then(res => {
+        //this.$axios.post(_const.url + "/aceWeb/operateBtt/operateAccount", this.qs.stringify({ "address": '0x09ced3ca4a35a636e5e190a1608e4b0299109e8' })).then(res => {
         let data = res.data.data
         console.log(data)
         console.log("body结束")
@@ -190,7 +199,7 @@ export default {
 
           this.nodeLevel = data.area || '--' //节点级别
           this.version = data.version || '--' //VIP级别
-          
+
 
           let dayReceive = this.cal.accAdd((data.dayReceiveAmountEth || 0), (data.dayRechargeReceiveAmountEth || 0))
           let superAll = this.cal.accAdd((data.superSubAmountEth || 0), (data.superAllAmountEth || 0))
@@ -205,12 +214,12 @@ export default {
           this.cashBalance = this.cal.accSub((data.receiveAmountEth || 0), (data.withdrawAmountEth || 0)) //可提现余额
 
           this.accuntEarning = data.receiveAmountEth || 0//累计收益
-          
+
           this.dynamicEarning = data.dayReceiveAmountEth || 0 //动态收益
           this.staticEarning = data.dayRechargeReceiveAmountEth || 0//静态收益
-          this.inviteAmountEth =data.inviteAmountEth || 0 //团队总数量
+          this.inviteAmountEth = data.inviteAmountEth || 0 //团队总数量
           this.rechargeAmountEth1 = data.rechargeAmountEth || 0 //
-          this.rechargeAmountEth2 = (data.rechargeAmountEth*3) || 0
+          this.rechargeAmountEth2 = (data.rechargeAmountEth * 3) || 0
         }
       }).catch(error => {
         imToken.callAPI('native.toastInfo', '系统错误，请稍后重试...')
@@ -231,7 +240,7 @@ export default {
   ul {
     @extend %flexBetween;
     margin: 0 auto;
-    @include border($d: bottom,$c: rgba(255,255,255,.1));
+    @include border($d: bottom, $c: rgba(255, 255, 255, 0.1));
     height: 1.28rem;
     box-sizing: border-box;
     padding: 0 1.07rem;
@@ -246,8 +255,8 @@ export default {
       @include border($w: 0.04rem, $c: transparent, $d: bottom);
     }
     .active-color {
-      border-color: #E7C054;
-      color: #E7C054;
+      border-color: #e7c054;
+      color: #e7c054;
     }
   }
 }

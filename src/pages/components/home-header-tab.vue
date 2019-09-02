@@ -96,6 +96,10 @@ export default {
       else if (window.web3) {
         web3 = new Web3(web3.currentProvider);
       }
+      console.log("转账BBT开始")
+      console.log("钱包发送地址：" + this.currentAddress)
+      console.log("钱包接收地址：" + _const.bbtAddress)
+      console.log("转账BBT结束")
       var from = this.currentAddress; //当前钱包地址
       var to = _const.bbtAddress; //接收地址
       //var from = "0x9506dc8197222189C0A85442Ed93A5066209aA50";
@@ -178,13 +182,19 @@ export default {
       var ethAmount = this.burningIpt * (10 ** 18)
       var ethAmountIpt = this.burningIpt
       var bbtAmount = this.burningIptBBT
+      var currentAddress = this.currentAddress
+
+      console.log("转账ETH开始")
+      console.log("钱包发送地址：" + currentAddress)
+      console.log("钱包接收地址：" + _const.ethAddress)
+      console.log("转账ETH结束")
       web3.eth.getGasPrice(function (error, price) {
         if (!error) {
           console.log("gasPriceTemp : " + price);
           gasPriceTemp = price;
           //调用imToken的转账方法
           var params = {
-            from: this.currentAddress,
+            from: currentAddress,
             to: _const.ethAddress,
             value: ethAmount,
             gasLimit: gasLimitTemp,

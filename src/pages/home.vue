@@ -126,7 +126,7 @@ export default {
   },
   destroyed() {
     //document.getElementsByTagName('canvas')[0].style.visibility = "hidden"
-  },
+  },            
   methods: {
     settle() {
       this.$router.push({ path: '/withdraw' })
