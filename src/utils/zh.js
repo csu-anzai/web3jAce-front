@@ -41,7 +41,8 @@ export default {
 
     loginBtn: '获取当前钱包地址',
 
-    transferTips: '您提现的手续费由本人承担，每次提现将扣除您账户0.001ETH作为手续费。'
+    transferTips: '您提现的手续费由本人承担，每次提现将扣除您账户0.001ETH作为手续费。',
+    transferTipsBtn: '我知道了'
   },
 
   withdraw: {

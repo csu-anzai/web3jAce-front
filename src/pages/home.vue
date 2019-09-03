@@ -53,7 +53,7 @@ import homeMask from './components/home-mask'
 import publicToast from '../components/public-toast'
 
 import homeTab from "./components/home-header-tab";
-// import '../utils/homeBgCanvas.js'
+import '../utils/homeBgCanvas.js'
 
 export default {
   name: 'home',
@@ -106,9 +106,10 @@ export default {
     } else {
       this.getInfoAll()
     }
+    document.getElementsByTagName('canvas')[0].style.visibility = "show"
   },
   destroyed() {
-
+    document.getElementsByTagName('canvas')[0].style.visibility = "hidden"
   },
   methods: {
     settle() {
@@ -235,8 +236,8 @@ export default {
   padding-bottom: 0.35rem;
   .home-header {
     height: 8.68rem;
-    width: 10rem;
-    @include bgCover("https://dapp.bbtchain.net/images/banner.jpg");
+    //width: 10rem;
+    //@include bgCover("https://dapp.bbtchain.net/images/banner.jpg");
   }
   .home-container {
     width: 9.47rem;

@@ -41,7 +41,8 @@ export default {
 
     loginBtn: 'Get wallet address',
 
-    transferTips: 'We charge withdraw fee for every withdrawal. Withdraw fee：0.001 ETH'
+    transferTips: 'We charge withdraw fee for every withdrawal. Withdraw fee：0.001 ETH',
+    transferTipsBtn: 'I know'
   },
 
   withdraw: {

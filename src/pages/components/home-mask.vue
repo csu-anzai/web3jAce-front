@@ -24,7 +24,7 @@
     <!-- tips提示框 -->
     <section class="mask-content tips-content" v-show="maskPage === 1">
       <p class="tips-text">{{ $t("home.transferTips") }}</p>
-      <p class="tips-btn" @click="closeMask">我知道了</p>
+      <p class="tips-btn" @click="closeMask">{{ $t('home.transferTipsBtn') }}</p>
     </section>
   </section>
 </template>
