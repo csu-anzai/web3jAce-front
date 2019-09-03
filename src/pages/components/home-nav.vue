@@ -3,11 +3,11 @@
     <!-- 导航栏 -->
     <ul class="nav">
       <li>
-        <img src="https://dapp.bbtchain.net/images/navLogo.png" alt="" class="logo"/>
-        <img src="https://dapp.bbtchain.net/images/navTxt.png" alt="" class="logo-txt"/>
+        <img src="../../assets/image/navLogo.png" alt="" class="logo"/>
+        <img src="../../assets/image/navTxt.png" alt="" class="logo-txt"/>
       </li>
       <li @click="tabNav">
-        <img src="https://dapp.bbtchain.net/images/navTab.png" alt="" class="logo"/>
+        <img src="../../assets/image/navTab.png" alt="" class="logo"/>
       </li>
     </ul>
 
