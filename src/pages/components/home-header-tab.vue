@@ -24,16 +24,18 @@
       </li>
     </ul>
 
-    <public-btn :txt="sendBtn" @click.native="sendFrom" class="active-btn" />
+    <public-btn :txt="sendBtn" :disabled="sendEthDisabled" @click.native="sendFrom" class="active-btn" />
 
     <section class="ipt-list">
       <input type="number" v-model="burningIptBBT" readonly maxlength="20" />
       <span>BBT</span>
     </section>
+
     <public-btn
       :txt="sendBtn1"
       @click.native="transferBbt"
       class="active-btn"
+      :disabled="sendBbtDisabled"
     />
 
     <!-- <public-btn :txt="exchangeBtn" @click.native="exchangeFrom" /> -->
@@ -77,7 +79,9 @@ export default {
           val: '15',
           txt: '15 ETH'
         }
-      ]
+      ],
+      sendEthDisabled: false,
+      sendBbtDisabled: false,
     }
   },
   created() {
@@ -89,6 +93,7 @@ export default {
       this.burningIpt = txt
     },
     transferBbt() {
+      imToken.callAPI('native.showLoading', 'loading...');
       if (window.ethereum) {
         web3 = new Web3(ethereum);
         ethereum.enable();
@@ -114,6 +119,9 @@ export default {
       console.log("from : " + from);
       var tokenValue = this.burningIptBBT;
       console.log(tokenValue)
+
+      var that = this
+      that.sendBbtDisabled = true
 
       web3.eth.getGasPrice(function (error, price) {
         if (!error) {
@@ -149,6 +157,8 @@ export default {
               console.log(params)
               console.log("进入开始转账2")
               web3.eth.sendTransaction(params, function (error, hash) {
+                imToken.callAPI('native.hideLoading')
+                that.sendBbtDisabled = false
                 if (!error) {
                   imToken.callAPI('native.toastInfo', '转账提交成功')
                   console.log(hash); // "0x7f9fade1c0d57a7af66ab4ead79fade1c0d57a7af66ab4ead7c2c2eb7b11a91385"
@@ -158,10 +168,14 @@ export default {
                 }
               });
             } else {
+              imToken.callAPI('native.hideLoading')
+              that.sendBbtDisabled = false
               console.log(error);
             }
           });
         } else {
+          imToken.callAPI('native.hideLoading')
+          that.sendBbtDisabled = false
           console.log("error : " + error);
         }
       });
@@ -170,6 +184,7 @@ export default {
     },
 
     sendFrom() {
+      imToken.callAPI('native.showLoading', 'loading...');
       if (window.ethereum) {
         web3 = new Web3(ethereum);
         ethereum.enable();
@@ -188,6 +203,10 @@ export default {
       console.log("钱包发送地址：" + currentAddress)
       console.log("钱包接收地址：" + _const.ethAddress)
       console.log("转账ETH结束")
+
+      var that = this
+      that.sendEthDisabled = true
+
       web3.eth.getGasPrice(function (error, price) {
         if (!error) {
           console.log("gasPriceTemp : " + price);
@@ -203,6 +222,8 @@ export default {
             feeCustomizable: false,
           }
           imToken.callAPI('transaction.tokenPay', params, function (err, hash) {
+            that.sendEthDisabled = false
+            imToken.callAPI('native.hideLoading')
             if (err) {
               imToken.callAPI('native.toastInfo', err.message)
               console.log(err)
@@ -218,6 +239,8 @@ export default {
             }
           })
         } else {
+          imToken.callAPI('native.hideLoading')
+          that.sendEthDisabled = false
           console.log("error : " + error);
         }
       });
