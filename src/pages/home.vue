@@ -15,7 +15,7 @@
       <home-body :currentAddress="currentAddress" />
 
       <section class="btn-list">
-        <public-btn :txt="settleBtn" @click.native="settle" />
+        <router-link to="withdraw" tag="p" class="withdraw-link">{{ $t(settleBtn) }}</router-link>
 
         <section class="ipt-list">
           <input
@@ -86,7 +86,7 @@ export default {
 
   },
   created() {
-
+    document.getElementsByTagName('canvas')[0].style.visibility = "visible"
   },
   mounted() {
     // 判断是否授权
@@ -106,7 +106,6 @@ export default {
     } else {
       this.getInfoAll()
     }
-    document.getElementsByTagName('canvas')[0].style.visibility = "show"
   },
   destroyed() {
     document.getElementsByTagName('canvas')[0].style.visibility = "hidden"
@@ -114,7 +113,6 @@ export default {
   methods: {
     settle() {
       this.$router.push({ path: '/withdraw' })
-      return
     },
 
     openMak() {
@@ -259,6 +257,19 @@ export default {
       &:first-child {
         margin-top: 0;
       }
+    }
+    .withdraw-link {
+      width: 8.67rem;
+      height: 1.28rem;
+      border-radius: .21rem;
+      background: #fff;
+      font-size: .37rem;
+      box-sizing: border-box;
+      @extend %flexCenter;
+      @include border($c: rgba(255,255,255,.3),$d: bor);
+      color: #E7C054;
+      background: #262626;
+      font-family: source-Regular;
     }
     input {
       width: 8.67rem;

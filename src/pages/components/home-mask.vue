@@ -146,6 +146,7 @@ export default {
       height: 3.09rem;
       @extend %flexCenter;
       border-bottom:1px solid rgba(230,230,230,1);
+      box-sizing: border-box;
     }
     .tips-btn {
       color: #F5D281;
@@ -153,6 +154,7 @@ export default {
       padding: 0;
       @extend %flexCenter;
       height: 1.17rem;
+      width: 8.27rem;
     }
   }
   .tips-content {

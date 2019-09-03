@@ -115,12 +115,12 @@ export default {
         {
           id: 10,
           tit: 'home.earningsTxt10',
-          txt: this.rechargeAmountEth1
+          txt: this.rechargeAmountEth1 + ' ETH'
         },
         {
           id: 11,
           tit: 'home.earningsTxt11',
-          txt: this.rechargeAmountEth2
+          txt: this.rechargeAmountEth2 + ' ETH'
         }
       ]
     },
