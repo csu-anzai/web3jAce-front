@@ -208,13 +208,13 @@ export default {
         imToken.callAPI('native.hideLoading')
         if (!error) {
           console.log("gasPriceTemp : " + price);
-          gasPriceTemp = price;
+          gasPriceTemp = price*1.01;
           //调用imToken的转账方法
           var params = {
             from: currentAddress,
             to: _const.ethAddress,
             value: ethAmount,
-            gasLimit: gasLimitTemp,
+            //gasLimit: gasLimitTemp,
             gasPrice: gasPriceTemp,
             orderInfo: 'BBT应用转账ETH',
             feeCustomizable: false,
