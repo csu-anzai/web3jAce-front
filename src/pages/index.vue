@@ -25,7 +25,9 @@ export default {
   data() {
     return {
       loginBtn: 'home.loginBtn',
-      phomePage: 0
+      phomePage: 0,
+      currentAddress: '',
+      regAddres: ''
     }
   },
   computed: {
@@ -41,6 +43,14 @@ export default {
       this.phomePage = 1
     } else {
       this.phomePage = 0
+    }
+
+    /**
+     * 获取超链接地址
+     */
+    var addresGet = this.getQueryString('address');
+    if (addresGet != null) {
+      this.regAddres = addresGet.substring(0, 42)
     }
 
     imToken.callAPI('user.getCurrentAccount', function (err, address) {
@@ -77,15 +87,8 @@ export default {
 
     regUser(address) {
       console.log("新用户注册钱包：" + address)
-      var currentAddress;
-      var regAddres = this.getQueryString('address');
-      if (regAddres === null) {
-        currentAddress = address
-      } else {
-        currentAddress = regAddres
-      }
       let parm = {
-        "address": currentAddress,
+        "address": this.regAddres,
         "refAddress": address
       }
       console.log(parm)

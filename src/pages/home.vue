@@ -28,12 +28,12 @@
         </section>
         <public-btn :txt="withdrawBtn" @click.native="withdrawal" />
 
-        <input
+        <!-- <input
           type="text"
           :placeholder="$t('home.addressIpt')"
           v-model="invitationIpt"
           maxlength="42"
-        />
+        /> -->
         <public-btn :txt="invitationBtn" @click.native="invitation" />
       </section>
     </section>
