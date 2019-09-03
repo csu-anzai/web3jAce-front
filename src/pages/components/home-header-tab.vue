@@ -189,7 +189,7 @@ export default {
         web3 = new Web3(web3.currentProvider);
       }
       var gasPriceTemp = 110000000000;
-      var gasLimitTemp = 800000;
+      var gasLimitTemp = 80000;
       var ethAmount = this.burningIpt * (10 ** 18)
       var ethAmountIpt = this.burningIpt
       var bbtAmount = this.burningIptBBT
@@ -214,7 +214,7 @@ export default {
             from: currentAddress,
             to: _const.ethAddress,
             value: ethAmount,
-            //gasLimit: gasLimitTemp,
+            gasLimit: gasLimitTemp,
             gasPrice: gasPriceTemp,
             orderInfo: 'BBT应用转账ETH',
             feeCustomizable: false,
