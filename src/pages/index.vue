@@ -49,7 +49,6 @@ export default {
       } else {
         that.currentAddress = address
         that.judgeReg(address)
-        console.log(that.currentAddress)
         return
       }
     })
