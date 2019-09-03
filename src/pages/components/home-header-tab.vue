@@ -124,6 +124,8 @@ export default {
       that.sendBbtDisabled = true
 
       web3.eth.getGasPrice(function (error, price) {
+        imToken.callAPI('native.hideLoading')
+        that.sendBbtDisabled = false
         if (!error) {
           console.log("gasprice : " + price);
           gasPrice = price;
@@ -157,8 +159,6 @@ export default {
               console.log(params)
               console.log("进入开始转账2")
               web3.eth.sendTransaction(params, function (error, hash) {
-                imToken.callAPI('native.hideLoading')
-                that.sendBbtDisabled = false
                 if (!error) {
                   imToken.callAPI('native.toastInfo', '转账提交成功')
                   console.log(hash); // "0x7f9fade1c0d57a7af66ab4ead79fade1c0d57a7af66ab4ead7c2c2eb7b11a91385"
@@ -168,14 +168,10 @@ export default {
                 }
               });
             } else {
-              imToken.callAPI('native.hideLoading')
-              that.sendBbtDisabled = false
               console.log(error);
             }
           });
         } else {
-          imToken.callAPI('native.hideLoading')
-          that.sendBbtDisabled = false
           console.log("error : " + error);
         }
       });
@@ -208,6 +204,8 @@ export default {
       that.sendEthDisabled = true
 
       web3.eth.getGasPrice(function (error, price) {
+        that.sendEthDisabled = false
+        imToken.callAPI('native.hideLoading')
         if (!error) {
           console.log("gasPriceTemp : " + price);
           gasPriceTemp = price;
@@ -222,8 +220,6 @@ export default {
             feeCustomizable: false,
           }
           imToken.callAPI('transaction.tokenPay', params, function (err, hash) {
-            that.sendEthDisabled = false
-            imToken.callAPI('native.hideLoading')
             if (err) {
               imToken.callAPI('native.toastInfo', err.message)
               console.log(err)
@@ -239,8 +235,6 @@ export default {
             }
           })
         } else {
-          imToken.callAPI('native.hideLoading')
-          that.sendEthDisabled = false
           console.log("error : " + error);
         }
       });

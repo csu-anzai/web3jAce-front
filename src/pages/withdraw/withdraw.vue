@@ -77,7 +77,7 @@ export default {
           that.walletAddress = address
           that.walletLink = _const.urlLink + '/?address=' + address
           // 获取信息
-          this.$axios.post(_const.url + "/aceWeb/operateBtt/operateAccount", this.qs.stringify({ "address": address })).then(res => {
+          this.$axios.get(_const.url + "/aceWeb/operateBtt/getAccount?address=" + address).then(res => {
             let data = res.data.data
             //console.log(data)
             if (data === "" || data === null) {

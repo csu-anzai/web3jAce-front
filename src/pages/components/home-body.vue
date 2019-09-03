@@ -31,7 +31,7 @@ export default {
     publicList
   },
   props: {
-    currentAddress: String
+    currentInfo: Array
   },
   data() {
     return {
@@ -150,6 +150,11 @@ export default {
       ]
     }
   },
+  created(){
+    console.log("从父元素获取的数据开始")
+    console.log(this.currentInfo);
+    console.log("从父元素获取的数据结束")
+  },
   mounted() {
     var that = this
     imToken.callAPI('user.getCurrentAccount', function (err, address) {
@@ -168,8 +173,7 @@ export default {
     },
     getInfoAll(address) {
       console.log("获取父级地址:" + address);
-      this.$axios.post(_const.url + "/aceWeb/operateBtt/operateAccount", this.qs.stringify({ "address": address })).then(res => {
-        //this.$axios.post(_const.url + "/aceWeb/operateBtt/operateAccount", this.qs.stringify({ "address": '0x09ced3ca4a35a636e5e190a1608e4b0299109e8' })).then(res => {
+      this.$axios.get(_const.url + "/aceWeb/operateBtt/getAccount?address=" + address).then(res => {
         let data = res.data.data
         console.log(data)
         console.log("body结束")

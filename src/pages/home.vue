@@ -12,7 +12,7 @@
         :currentAddress="currentAddress"
       />
 
-      <home-body :currentAddress="currentAddress" />
+      <home-body :currentInfo="currentInfo" />
 
       <section class="btn-list">
         <router-link to="withdraw" tag="p" class="withdraw-link">{{ $t(settleBtn) }}</router-link>
@@ -80,6 +80,7 @@ export default {
       toastTxt: '',
 
       currentAddress: '',
+      currentInfo: []
     }
   },
   computed: {
@@ -132,49 +133,30 @@ export default {
 
     //复制
     invitation() {
-      let address2 = this.invitationIpt
-      let parm = {
-        "address": this.currentAddress,
-        "refAddress": address2
-      }
-      console.log(parm)
-      this.$axios.post(_const.url + "/aceWeb/operateBtt/operateAccount", this.qs.stringify(parm)).then(res => {
-        let data = res.data
-        let code = data.statusCode
-        if (code == 200) {
-          if (address2 === "") {
-            imToken.callAPI('native.setClipboard', _const.urlLink + '/?address=' + this.currentAddress)
-          } else {
-            imToken.callAPI('native.setClipboard', _const.urlLink + '/?address=' + this.currentAddress + '/?refAddress=' + address2)
-          }
-          imToken.callAPI('native.toastInfo', '复制成功')
-          //alert("成功")
-        } else {
-          imToken.callAPI('native.toastInfo', '复制失败：' + data.statusMsg)
-          this.invitationIpt = ""
-          //alert('复制失败：' + data.statusMsg)
-        }
-      }).catch(error => {
-        console.log(error)
-        imToken.callAPI('native.toastInfo', '系统错误，请稍后重试...')
-        //alert("系统错误，请稍后重试")
-      });
+      imToken.callAPI('native.setClipboard', _const.urlLink + '/?address=' + this.currentAddress)
+      imToken.callAPI('native.toastInfo', '复制成功')
     },
 
     //获取钱包信息
     getInfoAll() {
       var that = this
-      that.$axios.post(_const.url + "/aceWeb/operateBtt/operateAccount", that.qs.stringify({ "address": this.$route.query.walletAddress })).then(res => {
+      that.$axios.get(_const.url + "/aceWeb/operateBtt/getAccount?address=" + this.$route.query.walletAddress).then(res => {
         let data = res.data.data
-        console.log(data)
+        that.currentInfo = data
         if (data === "" || data === null) {
           that.withdrawIpt = 0 //可提现余额
           imToken.callAPI('native.toastInfo', '用户不存在或者其他错误')
         } else {
           that.withdrawIpt = that.cal.accSub((data.receiveAmountEth || 0), (data.withdrawAmountEth || 0)) //可提现余额
         }
+        console.log("初始化获取数据");
+        console.log(data)
         let flg1 = data.rechargeAmountEth > 0 && data.rechargeAmountEth * 500 < data.rechargeAmountBbt
         let flg2 = data.rechargeAmountEth > 0 && (data.rechargeAmountBbt === 0 || data.rechargeAmountBbt === null)
+        console.log("进入判断是否激活开始");
+        console.log(flg1)
+        console.log(flg2)
+        console.log("进入判断是否激活结束");
         let tipsTxt = '您已经充值了' + data.rechargeAmountEth + '个ETH，请充值' + data.rechargeAmountEth * 500 + '个BBT！'
         if (flg1 || flg2) {
           // rechargeAmountEth 
@@ -189,7 +171,6 @@ export default {
         imToken.callAPI('native.toastInfo', '系统错误，请稍后重试...')
         console.log(error);
       });
-
     },
 
     //提现
